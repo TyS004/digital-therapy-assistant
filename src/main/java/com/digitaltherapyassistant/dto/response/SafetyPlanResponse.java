@@ -1,4 +1,5 @@
 package com.digitaltherapyassistant.dto.response;
 
-public class CrisisResponse {
+public class SafetyPlanResponse {
+
 }
