@@ -1,8 +1,13 @@
+package com.digitaltherapyassistant.service.rag;
+
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
 import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
+import com.digitaltherapyassistant.service.rag.EmbeddingService;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
+
+import java.util.UUID;
 
 public class RagContextBuilder {
     private final SimpleVectorStore vectorStore ;

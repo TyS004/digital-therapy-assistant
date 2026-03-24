@@ -1,9 +1,14 @@
 package com.digitaltherapyassistant.service;
 
+import com.digitaltherapyassistant.model.CrisisDetectionResult;
+import com.digitaltherapyassistant.model.DiaryInsights;
+import com.digitaltherapyassistant.model.DistortionSuggestion;
+import com.digitaltherapyassistant.model.SessionSummary;
 import com.digitaltherapyassistant.service.interfaces.AiServiceInterface;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +21,9 @@ public class AiService implements AiServiceInterface {
 
     @Override
     public List<DistortionSuggestion> analyzeThough(String automaticThought) {
-        return null;
+        List<DistortionSuggestion> suggestions = new ArrayList<>() ;
+
+        return suggestions;
     }
 
     @Override
@@ -26,16 +33,17 @@ public class AiService implements AiServiceInterface {
 
     @Override
     public CrisisDetectionResult detectCrisis(String text) {
-        return null;
+
+        return new CrisisDetectionResult();
     }
 
     @Override
     public DiaryInsights generateInsights(UUID userId) {
-        return null;
+        return new DiaryInsights();
     }
 
     @Override
     public SessionSummary summarizeSession(UUID sessionId) {
-        return null;
+        return new SessionSummary();
     }
 }
