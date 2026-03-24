@@ -27,10 +27,10 @@ public class KnowledgeBaseLoader {
 
     public KnowledgeBaseLoader(VectorStore vectorStore,
                                @Value("${spring.ai.vectorstore.simple.store.path:./data/vectorstore.json}") String storePath,
-                               @Value("${app.knowledge-base.burnout-content.file-path:/knowledge-base/burnout-content.json") String burnoutContentPath,
-                               @Value("${app.knowledge-base.cbt-techniques.file-path:/knowledge-base/cbt-techniques.json") String cbtTechniquesPath,
-                               @Value("${app.knowledge-base.crisis-protocol.file-path:/knowledge-base/crisis-protocol.json") String crisisProtocolPath,
-                               @Value("${app.knowledge-base.distortions.file-path:/knowledge-base/distortions.json") String distortionsPath
+                               @Value("${app.knowledge-base.burnout-content.file-path}") String burnoutContentPath,
+                               @Value("${app.knowledge-base.cbt-techniques.file-path}") String cbtTechniquesPath,
+                               @Value("${app.knowledge-base.crisis-protocol.file-path}") String crisisProtocolPath,
+                               @Value("${app.knowledge-base.distortions.file-path}") String distortionsPath
                                ) {
         this.vectorStore = vectorStore;
         this.storePath = storePath;

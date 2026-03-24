@@ -1,5 +1,4 @@
-{
-  "burnoutContent": [
+[
     {
       "id": "mbi-dimensions",
       "name": "Maslach Burnout Inventory Dimensions",
@@ -53,4 +52,3 @@
       ]
     }
   ]
-}

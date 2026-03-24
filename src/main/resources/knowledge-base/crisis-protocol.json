@@ -1,5 +1,4 @@
-{
-  "crisisProtocols": [
+[
     {
       "id": "warning-signs",
       "name": "Warning Signs Recognition",
@@ -53,4 +52,3 @@
       ]
     }
   ]
-}

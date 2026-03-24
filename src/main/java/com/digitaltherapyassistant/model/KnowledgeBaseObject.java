@@ -1,30 +1,20 @@
 package com.digitaltherapyassistant.model;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class KnowledgeBaseObject {
 
-    @Getter
-    @Setter
     private String id ;
-
-    @Getter
-    @Setter
     private String name ;
-
-    @Getter
-    @Setter
     private String description ;
-
-    @Getter
-    @Setter
     private List<String> examples ;
-
-    @Getter
-    @Setter
     private List<String> reframingQuestions ;
 
     public KnowledgeBaseObject(String id, String name, String description, List<String> examples, List<String> reframingQuestions) {

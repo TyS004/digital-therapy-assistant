@@ -1,5 +1,4 @@
-{
-  "distortions": [
+[
     {
       "id": "all-or-nothing",
       "name": "All-or-Nothing Thinking",
@@ -130,5 +129,4 @@
         "Am I taking responsibility for someone else's choices or random circumstances?"
       ]
     }
-  ]
-}
+]
