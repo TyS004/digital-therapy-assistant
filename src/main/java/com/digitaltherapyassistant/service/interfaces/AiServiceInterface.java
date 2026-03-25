@@ -1,7 +1,6 @@
 package com.digitaltherapyassistant.service.interfaces;
 
 import com.digitaltherapyassistant.dto.response.CrisisDetectionResponse;
-import com.digitaltherapyassistant.model.CrisisDetectionResult;
 import com.digitaltherapyassistant.model.DiaryInsights;
 import com.digitaltherapyassistant.model.DistortionSuggestion;
 import com.digitaltherapyassistant.model.SessionSummary;
