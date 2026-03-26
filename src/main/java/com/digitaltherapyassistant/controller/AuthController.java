@@ -49,12 +49,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    //NOT DONE
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestBody String refreshToken){
         AuthResponse response = authService.refreshToken(refreshToken);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    //NOT DONE
     @PostMapping("/logout")
     public ResponseEntity logout(@RequestBody String accessToken){
         authService.logout(accessToken);
