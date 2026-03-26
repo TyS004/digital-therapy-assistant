@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class MenuHandler{
     private Map<String, Command> commandMap;
 
-    public MenuHandler(List<Command> commandList) {
+    public MenuHandler(List<Command> commandList) throws NullPointerException{
         commandMap = commandList.stream()
             .collect(Collectors.toMap(Command::getName, c -> c));
     }
@@ -35,7 +35,7 @@ public class MenuHandler{
             command.execute(in);
         }
         else{ throw new CommandLineException("Invalid Input, Try Again!"); }
-        
+
         return true;
     }
 
