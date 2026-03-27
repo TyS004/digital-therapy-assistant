@@ -64,6 +64,7 @@ public class AuthServiceImpl implements AuthService{
     public AuthResponse login(LoginRequest request){
         AuthResponse response = new AuthResponse();
 
+        //Actual Log-In Logic
         try{
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

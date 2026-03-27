@@ -39,6 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                                     FilterChain filterChain)
             throws ServletException, IOException{
 
+        logger.info("JWT Filter running for: {}", request.getRequestURI());
+
         authenticateRequest(request);
 
         filterChain.doFilter(request, response);
@@ -49,8 +51,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         try{
             String jwt = extractJwtFromRequest(request);
 
+            logger.info("Extracted jwt");
+
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
                 String username = tokenProvider.getUsernameFromToken(jwt);
+                logger.info("Got " + username + " from token");
 
                 //Acutally Loads by Email Instead Because Multiple Users can have same Name using CustomUserDetailsService
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -66,7 +71,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                logger.debug("Authenticated user '{}' via JWT", username);
+                logger.info("Authenticated user '{}' via JWT", username);
+            }
+            else{
+                logger.info("No JWT Token");
             }
         }
         catch(Exception e){

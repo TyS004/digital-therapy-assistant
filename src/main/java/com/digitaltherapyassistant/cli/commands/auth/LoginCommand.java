@@ -25,9 +25,9 @@ public class LoginCommand implements Command {
     public String getMenuLabel() { return "Login"; }
     
     public boolean execute(Scanner in) {
-        System.out.println("Enter Email: ");
+        System.out.print("Enter Email: ");
         String email = in.nextLine();
-        System.out.println("Enter Password: ");
+        System.out.print("Enter Password: ");
         String password = in.nextLine();
 
         LoginRequest request = new LoginRequest();
