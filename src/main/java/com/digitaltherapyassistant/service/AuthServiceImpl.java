@@ -1,14 +1,10 @@
 package com.digitaltherapyassistant.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer.JwtConfigurer;
-import org.springframework.security.config.annotation.web.configurers.saml2.Saml2LogoutConfigurer.LogoutRequestConfigurer;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

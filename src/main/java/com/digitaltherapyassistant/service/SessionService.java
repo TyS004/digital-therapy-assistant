@@ -3,8 +3,6 @@ package com.digitaltherapyassistant.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
-
 import com.digitaltherapyassistant.dto.response.session.ActiveSession;
 import com.digitaltherapyassistant.dto.response.session.ChatResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionDetail;

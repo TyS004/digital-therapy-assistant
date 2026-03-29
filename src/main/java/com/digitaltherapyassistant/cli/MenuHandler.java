@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
-
 public class MenuHandler{
     private Map<String, Command> commandMap;
 

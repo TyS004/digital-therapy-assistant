@@ -1,7 +1,5 @@
 package com.digitaltherapyassistant.config;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,8 +9,6 @@ import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.repository.UserRepository;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ============================================================================

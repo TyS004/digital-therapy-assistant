@@ -4,12 +4,10 @@ import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.Command;
 import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
-import com.digitaltherapyassistant.controller.AuthController;
 import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
 import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 

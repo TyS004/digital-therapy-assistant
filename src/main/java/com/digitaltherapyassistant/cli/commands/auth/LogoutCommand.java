@@ -2,20 +2,15 @@ package com.digitaltherapyassistant.cli.commands.auth;
 
 import java.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.CLISession;
 import com.digitaltherapyassistant.cli.Command;
 import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
-import com.digitaltherapyassistant.controller.AuthController;
-import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
+
 
 @Component
 public class LogoutCommand implements Command {
-    private static final Logger logger = LoggerFactory.getLogger(LogoutCommand.class);
     private final CLISession session;
     private final AuthAPIClient authApiClient;
 

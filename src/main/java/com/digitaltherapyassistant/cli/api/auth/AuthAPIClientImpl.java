@@ -1,14 +1,7 @@
 package com.digitaltherapyassistant.cli.api.auth;
 
-import java.sql.ClientInfoStatus;
-
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.digitaltherapyassistant.cli.CLISession;

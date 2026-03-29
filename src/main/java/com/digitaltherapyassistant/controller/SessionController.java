@@ -3,11 +3,9 @@ package com.digitaltherapyassistant.controller;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.catalina.connector.Response;
-import org.hibernate.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,22 +19,14 @@ import com.digitaltherapyassistant.dto.response.session.SessionDetail;
 import com.digitaltherapyassistant.dto.response.session.SessionHistoryEntry;
 import com.digitaltherapyassistant.dto.response.session.SessionModuleDto;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
-import com.digitaltherapyassistant.entity.ChatMessage;
-import com.digitaltherapyassistant.service.SessionService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/sessions")
 @Tag(name = "Session", description = "Session REST API Endpoints")
 public class SessionController {
-    private final SessionService sessionService;
-
-    public SessionController(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
 
     @GetMapping("/")
     public ResponseEntity<List<SessionModuleDto>> getSessionLibrary(@RequestParam UUID userId){

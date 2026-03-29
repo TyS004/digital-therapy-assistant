@@ -11,7 +11,6 @@ import com.digitaltherapyassistant.dto.response.session.SessionDetail;
 import com.digitaltherapyassistant.dto.response.session.SessionHistoryEntry;
 import com.digitaltherapyassistant.dto.response.session.SessionModuleDto;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
-import com.digitaltherapyassistant.entity.SessionModule;
 
 @Service
 public class SessionServiceImpl implements SessionService{

@@ -7,8 +7,6 @@ import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Component;
 
-import com.digitaltherapyassistant.entity.User;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

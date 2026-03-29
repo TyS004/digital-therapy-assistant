@@ -3,15 +3,11 @@ package com.digitaltherapyassistant.cli.commands.crisis;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.imageio.plugins.tiff.ExifGPSTagSet;
-
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.Command;
-import com.digitaltherapyassistant.cli.CommandLineException;
 import com.digitaltherapyassistant.cli.MenuHandler;
 import com.digitaltherapyassistant.cli.commands.BackCommand;
-import com.digitaltherapyassistant.cli.commands.ExitCommand;
 
 @Component
 public class CrisisSupportMenuCommand implements Command {

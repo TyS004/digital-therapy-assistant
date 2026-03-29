@@ -1,7 +1,6 @@
 package com.digitaltherapyassistant.cli.commands;
 import java.util.Scanner;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 import com.digitaltherapyassistant.cli.Command;
 

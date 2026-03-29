@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.client.RestTemplate;
 
 import com.digitaltherapyassistant.security.JwtAuthenticationFilter;
-import com.digitaltherapyassistant.security.JwtTokenProvider;
 
 @Configuration
 public class SecurityConfig {
