@@ -8,17 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.Command;
+import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
 import com.digitaltherapyassistant.controller.AuthController;
 import com.digitaltherapyassistant.dto.request.LoginRequest;
 import com.digitaltherapyassistant.dto.response.AuthResponse;
 
 @Component
 public class LoginCommand implements Command {
-    private final AuthController authController;
+    private final AuthAPIClient authApiClient;
     private static final Logger logger = LoggerFactory.getLogger(LoginCommand.class);
 
-    public LoginCommand(AuthController authController) {
-        this.authController = authController;
+    public LoginCommand(AuthAPIClient authApiClient) {
+        this.authApiClient = authApiClient;
     }
 
     public String getName() { return "b"; }
@@ -34,9 +35,8 @@ public class LoginCommand implements Command {
         request.setEmail(email);
         request.setPassword(password);
 
-        ResponseEntity<AuthResponse> httpResponse = authController.login(request);
-        logger.info("Returned: " + httpResponse.getStatusCode().toString());
-        logger.info(httpResponse.getBody().getMessage());
+        AuthResponse response = authApiClient.login(request);
+        logger.info(response.getMessage());
 
         return true;
     }

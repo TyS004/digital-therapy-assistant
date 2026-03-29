@@ -24,13 +24,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
+    private final TokenBlackListService tokenBlackListService;
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     public JwtAuthenticationFilter(JwtTokenProvider tokenProvider,
-                                    UserDetailsService userDetailsService
+                                    UserDetailsService userDetailsService,
+                                    TokenBlackListService tokenBlackListService
     ){
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
+        this.tokenBlackListService = tokenBlackListService;
     }
 
     @Override
@@ -47,11 +50,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     }
 
     //Every Time Something Other than /auth is used
-    public void authenticateRequest(HttpServletRequest request){
+    private void authenticateRequest(HttpServletRequest request){
         try{
             String jwt = extractJwtFromRequest(request);
 
             logger.info("Extracted jwt");
+
+            if(StringUtils.hasText(jwt) && tokenBlackListService.isBlacklisted(jwt)){
+                logger.error("Token is Blacklisted");
+                return;
+            }
 
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
                 String username = tokenProvider.getUsernameFromToken(jwt);
