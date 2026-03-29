@@ -33,21 +33,35 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-expiration}")
     private long refreshExpiration;
 
-    public String generateAccessToken(String username) {
+    public String generateAccessToken(String email) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
-                .subject(username)        
+                .subject(email)        
                 .issuedAt(now)  
                 .expiration(expiryDate)  
                 .signWith(key)       
                 .compact();                     
     }
 
-    public String getUsernameFromToken(String token) {
+    public String generateRefreshToken(String email) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + refreshExpiration);
+
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.builder()
+                .subject(email)        
+                .issuedAt(now)  
+                .expiration(expiryDate) 
+                .signWith(key)       
+                .compact();                     
+    }
+
+    public String getEmailFromToken(String token) {
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         Claims claims = Jwts.parser()

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.digitaltherapyassistant.cli.CLISession;
-import com.digitaltherapyassistant.dto.request.LoginRequest;
-import com.digitaltherapyassistant.dto.response.AuthResponse;
+import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
+import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 
 @Component
 public abstract class APIClient {
