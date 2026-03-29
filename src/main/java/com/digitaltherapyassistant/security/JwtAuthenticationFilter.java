@@ -62,11 +62,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             }
 
             if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
-                String username = tokenProvider.getUsernameFromToken(jwt);
-                logger.info("Got " + username + " from token");
+                String email = tokenProvider.getEmailFromToken(jwt);
+                logger.info("Got " + email + " from token");
 
                 //Acutally Loads by Email Instead Because Multiple Users can have same Name using CustomUserDetailsService
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authentication = 
                     new UsernamePasswordAuthenticationToken(
                         userDetails,
@@ -79,7 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                logger.info("Authenticated user '{}' via JWT", username);
+                logger.info("Authenticated user '{}' via JWT", email);
             }
             else{
                 logger.info("No JWT Token");

@@ -12,9 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.digitaltherapyassistant.dto.request.LoginRequest;
-import com.digitaltherapyassistant.dto.request.RegisterRequest;
-import com.digitaltherapyassistant.dto.response.AuthResponse;
+import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
+import com.digitaltherapyassistant.dto.request.auth.RegisterRequest;
+import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.security.JwtTokenProvider;
@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService{
             userRepository.save(user);
 
             response.setAccessToken(tokenProvider.generateAccessToken(user.getEmail()));
-            response.setRefreshToken(tokenProvider.generateAccessToken(user.getEmail()));
+            response.setRefreshToken(tokenProvider.generateRefreshToken(user.getEmail()));
             response.setMessage("Registered");
             response.setUserID(user.getId());
 
@@ -81,7 +81,9 @@ public class AuthServiceImpl implements AuthService{
             response.setMessage("Invalid Credentials");
             return response;
         }
+
         response.setAccessToken(tokenProvider.generateAccessToken(request.getEmail()));
+        response.setRefreshToken(tokenProvider.generateRefreshToken(request.getEmail()));
         response.setMessage("Logged In User " + request.getEmail());
         
         return response;
@@ -89,9 +91,23 @@ public class AuthServiceImpl implements AuthService{
 
     public AuthResponse refreshToken(String refreshToken){
         AuthResponse response = new AuthResponse();
+
+        if(tokenBlackListService.isBlacklisted(refreshToken)){
+            response.setMessage("User Logged Out");
+            return response;
+        }
+        else if(!tokenProvider.validateToken(refreshToken)){
+            response.setMessage("Invalid Token");
+            return response;
+        }
+
+        String userEmail = tokenProvider.getEmailFromToken(refreshToken);
+        //response.setUserID(tokenProvider.getUsernameFromToken());
+        response.setAccessToken(tokenProvider.generateAccessToken(userEmail));
+        response.setRefreshToken(refreshToken);
         response.setMessage("Refreshed Token");
         
-        return new AuthResponse();
+        return response;
     }
 
     public void logout(String accessToken){

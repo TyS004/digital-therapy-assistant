@@ -1,4 +1,4 @@
-package com.digitaltherapyassistant.dto.request;
+package com.digitaltherapyassistant.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class RegisterRequest {
     private String email;
     private String password;
+    private String name;
 }

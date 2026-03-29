@@ -1,4 +1,4 @@
-package com.digitaltherapyassistant.dto.response;
+package com.digitaltherapyassistant.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -2,11 +2,10 @@ package com.digitaltherapyassistant.service;
 
 import org.springframework.stereotype.Service;
 
-import com.digitaltherapyassistant.dto.request.LoginRequest;
-import com.digitaltherapyassistant.dto.request.RegisterRequest;
-import com.digitaltherapyassistant.dto.response.AuthResponse;
+import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
+import com.digitaltherapyassistant.dto.request.auth.RegisterRequest;
+import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 
-@Service
 public interface AuthService {
     AuthResponse register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
