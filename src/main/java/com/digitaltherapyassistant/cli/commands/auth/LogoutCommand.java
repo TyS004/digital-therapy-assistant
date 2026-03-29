@@ -7,28 +7,29 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.digitaltherapyassistant.cli.CLISession;
 import com.digitaltherapyassistant.cli.Command;
+import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
 import com.digitaltherapyassistant.controller.AuthController;
 import com.digitaltherapyassistant.dto.response.AuthResponse;
 
 @Component
 public class LogoutCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(LogoutCommand.class);
-    private final AuthController authController;
+    private final CLISession session;
+    private final AuthAPIClient authApiClient;
 
-    public LogoutCommand(AuthController authController) {
-        this.authController = authController;
+    public LogoutCommand(AuthAPIClient authApiClient,
+                        CLISession session) {
+        this.authApiClient = authApiClient;
+        this.session = session;
     }
 
     public String getName() { return "c"; }
     public String getMenuLabel() { return "Logout"; }
     
     public boolean execute(Scanner in) { 
-        System.out.print("Enter your access token: ");
-        String accesToken = in.nextLine().trim();
-
-        authController.logout(accesToken);
-
+        authApiClient.logout(session.getToken());
         System.out.println("Logged Out");
         return true;
     }

@@ -18,22 +18,26 @@ import com.digitaltherapyassistant.dto.response.AuthResponse;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.security.JwtTokenProvider;
+import com.digitaltherapyassistant.security.TokenBlackListService;
 
 @Service
 public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-        private final AuthenticationManager authenticationManager;
+    private final TokenBlackListService tokenBlackListService;
+    private final AuthenticationManager authenticationManager;
 
     public AuthServiceImpl(UserRepository userRepository, 
                             JwtTokenProvider tokenProvider,
                             PasswordEncoder passwordEncoder,
-                            AuthenticationManager authenticationManager) {
+                            AuthenticationManager authenticationManager,
+                            TokenBlackListService tokenBlackListService) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.tokenBlackListService = tokenBlackListService;
     }
 
     public AuthResponse register(RegisterRequest request){
@@ -70,7 +74,7 @@ public class AuthServiceImpl implements AuthService{
                 new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
                     request.getPassword()
-                )
+                ) 
             );
         }
         catch(BadCredentialsException e){
@@ -91,6 +95,6 @@ public class AuthServiceImpl implements AuthService{
     }
 
     public void logout(String accessToken){
-        
+        tokenBlackListService.blacklist(accessToken);
     }
 }

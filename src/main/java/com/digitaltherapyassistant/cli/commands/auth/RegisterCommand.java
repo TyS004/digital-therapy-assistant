@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.Command;
+import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
 import com.digitaltherapyassistant.controller.AuthController;
 import com.digitaltherapyassistant.dto.request.RegisterRequest;
 import com.digitaltherapyassistant.dto.response.AuthResponse;
@@ -13,10 +14,10 @@ import java.util.Scanner;
 @Component
 public class RegisterCommand implements Command {
 
-    private AuthController authController;
+    private AuthAPIClient authAPIClient;
 
-    public RegisterCommand(AuthController authController){
-        this.authController = authController;
+    public RegisterCommand(AuthAPIClient authAPIClient){
+        this.authAPIClient = authAPIClient;
     }
 
     public String getName(){ return "a"; }
@@ -31,9 +32,9 @@ public class RegisterCommand implements Command {
         String name = in.nextLine().trim();
 
         RegisterRequest request = new RegisterRequest(userEmail, password, name);
-        ResponseEntity<AuthResponse> response = authController.register(request);
+        AuthResponse response = authAPIClient.register(request);
 
-        System.out.println(response.getBody().getMessage());
+        System.out.println(response.getMessage());
         return true;
     }
 }
