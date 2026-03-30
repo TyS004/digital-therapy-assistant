@@ -3,6 +3,7 @@ package com.digitaltherapyassistant.controller;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -64,6 +65,9 @@ public class SessionController {
     @PostMapping("/{sessionId}/chat")
     public ResponseEntity<ChatResponse> chat(@PathVariable UUID sessionId, @RequestBody String message){
         ChatResponse response = sessionService.chat(sessionId, message);
+        if(response.getChatMessage() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
