@@ -1,11 +1,14 @@
 package com.digitaltherapyassistant.service.rag;
 
+import com.digitaltherapyassistant.config.VectorStoreConfig;
 import com.digitaltherapyassistant.model.BurnoutContent;
 import com.digitaltherapyassistant.model.CbtTechnique;
 import com.digitaltherapyassistant.model.CrisisProtocol;
 import com.digitaltherapyassistant.model.Distortion;
 import com.fasterxml.jackson.core.type.TypeReference;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -21,6 +24,9 @@ import java.util.Map;
 
 @Component
 public class KnowledgeBaseLoader {
+    private static final Logger log = LoggerFactory.getLogger(VectorStoreConfig.class);
+
+
     private final VectorStore vectorStore;
     private final String storePath;
     private final String burnoutContentPath ;
@@ -48,7 +54,7 @@ public class KnowledgeBaseLoader {
         File storeFile = new File(storePath);
 
         if (storeFile.exists() && storeFile.length() > 0) {
-            System.out.println("Vector Store already persisted at " + storeFile.getAbsolutePath() + ". Skipping knowledge base reload.");
+            log.info("Vector Store already persisted at " + storeFile.getAbsolutePath() + ". Skipping knowledge base reload.");
             return;
         }
 
@@ -73,15 +79,16 @@ public class KnowledgeBaseLoader {
 
         if (!documents.isEmpty()) {
             vectorStore.add(documents) ;
-            System.out.println("Successfully loaded " + totalLoaded + " documents") ;
+            log.info("Knowledge base loaded: " + totalLoaded + " total documents in vector store");
+        } else {
+
         }
 
-        System.out.println("Knowledge base loaded: " + totalLoaded + " total documents in vector store");
 
         if (vectorStore instanceof SimpleVectorStore svs) {
             storeFile.getParentFile().mkdirs();
             svs.save(storeFile);
-            System.out.println("Vector store persisted to: " + storeFile.getAbsolutePath());
+            log.info("Vector store persisted to: " + storeFile.getAbsolutePath());
         }
     }
 

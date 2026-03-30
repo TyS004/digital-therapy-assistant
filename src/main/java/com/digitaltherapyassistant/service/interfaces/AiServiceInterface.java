@@ -17,7 +17,7 @@ public interface AiServiceInterface {
 
     List<String> generateReframingPrompts(String thought, List<String> distortionIds) ;
 
-    CrisisDetectionResponse detectCrisis(String text) ;
+    CrisisDetectionResult detectCrisis(String text) ;
 
     DiaryInsights generateInsights(UUID userId) ;
 
