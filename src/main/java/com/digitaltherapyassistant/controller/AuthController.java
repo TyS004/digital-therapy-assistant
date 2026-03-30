@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
+import com.digitaltherapyassistant.dto.request.auth.RefreshRequest;
 import com.digitaltherapyassistant.dto.request.auth.RegisterRequest;
 import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 import com.digitaltherapyassistant.service.AuthService;
@@ -45,7 +46,8 @@ public class AuthController {
     }   
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestBody String refreshToken){
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request){
+        String refreshToken = request.getRefreshToken();
         refreshToken = refreshToken.replaceAll("^\"|\"$", "");
         AuthResponse response = authService.refreshToken(refreshToken);
 
