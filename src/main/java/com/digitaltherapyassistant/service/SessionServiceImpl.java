@@ -71,42 +71,62 @@ public class SessionServiceImpl implements SessionService{
     }
 
     public ActiveSession startSession(UUID userId, UUID sessionId) {
-        ActiveSession activeSession = new ActiveSession();
+        ActiveSession response = new ActiveSession();
 
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            activeSession.setMessage("User Not Found");
-            return activeSession;
+            response.setMessage("User Not Found");
+            return response;
         }
 
         CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElse(null);
         if (cbtSession == null) {
-            activeSession.setMessage("Session Not Found");
-            return activeSession;
+            response.setMessage("Session Not Found");
+            return response;
         }   
 
-        UserSession userSession = new UserSession();
+        UserSession userSession = userSessionRepository.findByCbtSession(cbtSession).orElse(null);
+        if(userSession != null){
+            response.setMessage("User Session Already Started");
+            return response;
+        }
+
+        userSession = new UserSession();
         userSession.setCbtSession(cbtSession);
         userSession.setUser(user);
         userSession.setStatus(Status.IN_PROGRESS);
         userSession.setStartedAt(LocalDateTime.now());
+        userSession.setChatMessages(new ArrayList<>());
         userSessionRepository.save(userSession);
 
-        activeSession.setSession(userSession);
-        activeSession.setMessage("Session Started");
-        return activeSession;
+        response.setSession(userSession);
+        response.setMessage("Session Started");
+        return response;
     }
 
     public ChatResponse chat(UUID sessionId, String message){
         ChatResponse response = new ChatResponse();
         ChatMessage chatMessage = new ChatMessage();
-        //CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElse(null);
+
+        CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElse(null);
+        if(cbtSession == null){
+            response.setMessage("CBT Session Not Found");
+            return response;
+        }
+        UserSession userSession = userSessionRepository.findByCbtSession(cbtSession).orElse(null);
+        if(userSession == null){
+            response.setMessage("Session Not Started or Found");
+            return response;
+        }
 
         chatMessage.setContent(message);
         chatMessage.setRole(Role.USER);
         chatMessage.setTimestamp(LocalDateTime.now());
-        chatMessage.setUserSession(null);
+        chatMessage.setUserSession(userSession);
         chatMessageRepository.save(chatMessage);
+
+        List<ChatMessage> chatMessages = chatMessageRepository.findAllByUserSession(userSession);
+        chatMessages.add(chatMessage);
 
         response.setChatMessage(chatMessage);
         response.setMessage("Message Set");
