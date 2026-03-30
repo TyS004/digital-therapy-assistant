@@ -48,6 +48,9 @@ public class SessionController {
     @PostMapping("/{sessionId}/start")
     public ResponseEntity<ActiveSession> startSession(@PathVariable UUID sessionId, @RequestBody StartSessionRequest request){                                                            
         ActiveSession response = sessionService.startSession(request.getUserId(), sessionId);
+        if(response.getSession() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

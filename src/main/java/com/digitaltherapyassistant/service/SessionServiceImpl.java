@@ -63,9 +63,9 @@ public class SessionServiceImpl implements SessionService{
         userSession.setUser(user);
         userSession.setStatus(Status.IN_PROGRESS);
         userSession.setStartedAt(LocalDateTime.now());
-        userSessionRepository.save(userSession); 
+        userSessionRepository.save(userSession);
 
-        activeSession.setSession(cbtSession);
+        activeSession.setSession(userSession);
         activeSession.setMessage("Session Started");
         return activeSession;
     }
