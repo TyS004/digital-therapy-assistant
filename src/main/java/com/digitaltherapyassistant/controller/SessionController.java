@@ -18,7 +18,6 @@ import com.digitaltherapyassistant.dto.request.session.StartSessionRequest;
 import com.digitaltherapyassistant.dto.response.session.ActiveSession;
 import com.digitaltherapyassistant.dto.response.session.ChatResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionDetail;
-import com.digitaltherapyassistant.dto.response.session.SessionHistoryEntry;
 import com.digitaltherapyassistant.dto.response.session.SessionModuleDto;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.service.SessionService;
@@ -37,12 +36,20 @@ public class SessionController {
 
     @GetMapping("")
     public ResponseEntity<List<SessionModuleDto>> getSessionLibrary(@RequestParam UUID userId){
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        List<SessionModuleDto> response = sessionService.getSessionLibrary(userId);
+        if(response.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }   
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{sessionId}")
     public ResponseEntity<SessionDetail> getSessionDetails(@PathVariable UUID sessionId){
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        SessionDetail response = sessionService.getSessionDetails(sessionId);
+        if(response.getSession() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/{sessionId}/start")
@@ -56,16 +63,16 @@ public class SessionController {
 
     @PostMapping("/{sessionId}/chat")
     public ResponseEntity<ChatResponse> chat(@PathVariable UUID sessionId, @RequestBody String message){
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        ChatResponse response = sessionService.chat(sessionId, message);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/{sessionId}/end")
-    public ResponseEntity<SessionSummary> endSession(@PathVariable UUID sessionId, @RequestBody UUID userId){
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<SessionHistoryEntry> getSessionHistory(@PathVariable UUID userId){
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<SessionSummary> endSession(@PathVariable UUID sessionId, @RequestBody String reason){
+        SessionSummary response = sessionService.endSession(sessionId, reason);
+        if(response.getSession() == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
