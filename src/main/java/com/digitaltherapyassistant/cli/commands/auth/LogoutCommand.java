@@ -26,6 +26,7 @@ public class LogoutCommand implements Command {
     public boolean execute(Scanner in) { 
         authApiClient.logout(session.getToken());
         System.out.println("Logged Out");
+        
         return true;
     }
 }

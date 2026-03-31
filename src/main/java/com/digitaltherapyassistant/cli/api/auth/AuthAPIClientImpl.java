@@ -12,75 +12,44 @@ import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 
 @Component
 public class AuthAPIClientImpl extends APIClient implements AuthAPIClient{
-    private String clientURL;
-
     public AuthAPIClientImpl(RestTemplate restTemplate, CLISession session,
-        @Value("${cli.api.base-url}") String clientURL
-    ) {
-        super(restTemplate, session);
-        this.clientURL = clientURL;
+        @Value("${cli.api.base-url}") String clientURL){
+        super(restTemplate, session, clientURL);
     }
 
-    public AuthResponse register(RegisterRequest request){
-        AuthResponse response;
-        try{
-            response = restTemplate.postForObject(
-                this.clientURL + "/api/auth/register",
-                 request,
-                  AuthResponse.class);
-            session.login(request.getEmail(), response.getUserID(), response.getAccessToken());
+    public void register(RegisterRequest request){
+        AuthResponse response = super.POST
+            (clientURL + "/api/auth/register", request, AuthResponse.class);
 
-            return response;
-        }
-        catch(Exception e){
-            response = new AuthResponse();
-            response.setMessage("Register Failed: " + e.getMessage());
-            return response;
-        }
+        if(response == null) { return; }
+        session.login(clientURL, response.getUserID(), response.getAccessToken());
     }
 
-    public AuthResponse login(LoginRequest request){
-        AuthResponse response = new AuthResponse();
+    public void login(LoginRequest request){
         if(session.isLoggedIn()){
-            response.setMessage("Already Logged In");
-            return response;
+            logger.error("User Already Logged In");
+            return;
         }
+        
+        AuthResponse response = POST
+            (clientURL + "/api/auth/login", request, AuthResponse.class);
 
-        try{
-            response = restTemplate.postForObject(
-                this.clientURL + "/api/auth/login",
-                request,
-                AuthResponse.class);
-
-            session.login(request.getEmail(), response.getUserID(), response.getAccessToken());
-
-            return response;
-
-        }catch(Exception e){
-            response.setMessage("Log In Failed: " + e.getMessage() + "\n Invalid Credentials");
-            return response;
-        }
+        if(response == null) { return; }
+        session.login(request.getEmail(), response.getUserID(), response.getAccessToken());
     }
 
-    public AuthResponse refreshToken(String refreshToken){
-        AuthResponse response = new AuthResponse();
-        return response;
+    public void refreshToken(String refreshToken){
+        AuthResponse response = POST
+            (clientURL + "/api/auth/refresh", refreshToken, AuthResponse.class);
+
+        if(response == null){ return; }
+        session.setToken(response.getAccessToken());
     }
 
-    public AuthResponse logout(String accessToken){
+    public void logout(String accessToken){
         AuthResponse response = new AuthResponse();
-        try{
-            response = restTemplate.postForObject(
-                this.clientURL + "/api/auth/logout",
-                accessToken,
-                  AuthResponse.class);
 
-            session.logout();
-            logger.info("Deleted Session Data");
-            return response;
-        }catch(Exception e){
-            response.setMessage("Log In Failed: " + e.getMessage() + "\n Already logged out");
-            return response;
-        }
+        POST(clientURL + "/api/auth/logout", response, AuthResponse.class);
+        session.logout();
     }
 }

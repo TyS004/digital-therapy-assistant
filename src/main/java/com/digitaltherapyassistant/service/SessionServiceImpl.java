@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.digitaltherapyassistant.cli.commands.cbt.CBTSessionsMenuCommand;
 import com.digitaltherapyassistant.dto.response.session.ActiveSession;
 import com.digitaltherapyassistant.dto.response.session.ChatResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionDetail;
@@ -134,10 +133,47 @@ public class SessionServiceImpl implements SessionService{
     }
 
     public SessionSummary endSession(UUID sessionId, String reason){
-        return new SessionSummary();
+        SessionSummary response = new SessionSummary();
+
+        CbtSession session = cbtSessionRepository.findById(sessionId).orElse(null);
+        if(session == null){
+            response.setMessage("CBT Session not Found");
+            return response;
+        }
+        UserSession userSession = userSessionRepository.findByCbtSession(session).orElse(null);
+        if(userSession == null){
+            response.setMessage("User Session Not Started / Not Found");
+            return response;
+        }
+        userSession.setEndedAt(LocalDateTime.now());
+        userSession.setStatus(Status.COMPLETED);
+        userSessionRepository.delete(userSession);
+
+        response.setSession(session);
+        response.setReason(reason); 
+        response.setMessage("Session Ended");
+
+        return response;
     }
     
     public List<SessionHistoryEntry> getSessionHistory(UUID userId){
-        return List.of(new SessionHistoryEntry());
+        List<SessionHistoryEntry> response = new ArrayList<>();
+
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null){
+            return response;
+        }
+        List<UserSession> userSessions = userSessionRepository.findAllByUser(user).orElse(new ArrayList<>());
+        if(userSessions.isEmpty()){
+            return response;
+        }
+
+        for(UserSession session : userSessions){
+            SessionHistoryEntry sessionHistory = new SessionHistoryEntry();
+            sessionHistory.setUserSession(session);
+            sessionHistory.setMessage("Set Session " + session.getId());
+            response.add(sessionHistory);
+        }
+        return response;
     }
 }

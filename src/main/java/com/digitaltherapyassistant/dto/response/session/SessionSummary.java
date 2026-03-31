@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionSummary {
-    private String reason;
     private CbtSession session;
+    private String reason;
+    private String message;
 }

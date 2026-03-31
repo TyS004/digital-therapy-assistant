@@ -8,8 +8,8 @@ import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 
 @Component
 public interface AuthAPIClient {
-    AuthResponse register(RegisterRequest request);
-    AuthResponse login(LoginRequest request);
-    AuthResponse refreshToken(String refreshToken);
-    AuthResponse logout(String accessToken);
+    void register(RegisterRequest request);
+    void login(LoginRequest request);
+    void refreshToken(String refreshToken);
+    void logout(String accessToken);
 }

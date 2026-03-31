@@ -30,9 +30,8 @@ public class RegisterCommand implements Command {
         String name = in.nextLine().trim();
 
         RegisterRequest request = new RegisterRequest(userEmail, password, name);
-        AuthResponse response = authAPIClient.register(request);
-
-        System.out.println(response.getMessage());
+        authAPIClient.register(request);
+        
         return true;
     }
 }

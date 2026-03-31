@@ -33,9 +33,8 @@ public class LoginCommand implements Command {
         request.setEmail(email);
         request.setPassword(password);
 
-        AuthResponse response = authApiClient.login(request);
-        logger.info(response.getMessage());
-
+        authApiClient.login(request);
+        
         return true;
     }
 }
