@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface AiServiceInterface {
     ChatResponse generateResponse(UUID sessionId, String userMessage) ;
 
-    List<DistortionSuggestion> analyzeThough(String automaticThought) ;
+    List<DistortionSuggestion> analyzeThought(String automaticThought) ;
 
     List<String> generateReframingPrompts(String thought, List<String> distortionIds) ;
 

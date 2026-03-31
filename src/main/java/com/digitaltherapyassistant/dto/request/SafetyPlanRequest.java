@@ -1,4 +1,4 @@
 package com.digitaltherapyassistant.dto.request;
 
-public class CrisisRequest {
+public class SafetyPlanRequest {
 }
