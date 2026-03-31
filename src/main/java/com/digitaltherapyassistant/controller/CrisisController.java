@@ -5,10 +5,7 @@ import com.digitaltherapyassistant.dto.response.*;
 import com.digitaltherapyassistant.entity.CopingStrategy;
 import com.digitaltherapyassistant.entity.TrustedContact;
 import com.digitaltherapyassistant.mapper.DtoMapper;
-import com.digitaltherapyassistant.model.CrisisDetectionResult;
-import com.digitaltherapyassistant.service.CrisisService;
 import com.digitaltherapyassistant.service.interfaces.CrisisServiceInterface;
-import com.digitaltherapyassistant.service.rag.CrisisDetectionResultDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.digitaltherapyassistant.dto.response.ApiResponse.success;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/crisis")
@@ -52,9 +47,9 @@ public class CrisisController {
     @GetMapping
     public ResponseEntity<ApiResponse<CrisisHubResponse>> getCrisisHub(
             @Parameter(description = "Filter By User Id")
-            @RequestParam(required = true) String userId) {
+            @RequestParam(required = true) UUID userId) {
 
-        SafetyPlan safetyPlan = this.crisisService.getSafetyPlan(String userId) ;
+        SafetyPlanDto safetyPlan = this.crisisService.getSafetyPlan(userId) ;
         List<TrustedContact> trustedContacts = this.crisisService.getTrustedContacts(String userId) ;
         List<CopingStrategy> copingStrategies = this.crisisService.getCopingStrategies() ;
 
@@ -76,15 +71,13 @@ public class CrisisController {
     @Operation(summary = "Detect user crisis", description = "Detect if a user is currently in crisis based on their current usage of the application")
     @PostMapping("/detect")
     public ResponseEntity<ApiResponse<CrisisDetectionResponse>> detectCrisis(
-            @Parameter(description = "Filter By User Id")
-            @RequestParam(required = true) String userId
+            @Parameter(description = "String to analyze for crisis detection")
+            @RequestParam(required = true) String text
     ) {
 
-        CrisisDetectionResultDto crisisDetectionResult = this.crisisService.detectCrisis(userId) ;
+        CrisisDetectionResponse response = this.crisisService.detectCrisis(text) ;
 
-        CrisisDetectionResponse crisisDetectionResponse = this.mapper.toCrisisDetectionResponse(crisisDetectionResult) ;
-
-        return ResponseEntity.ok(ApiResponse.success("Crisis Detection Successful", crisisDetectionResponse)) ;
+        return ResponseEntity.ok(ApiResponse.success("Crisis Detection Successful", response)) ;
 
     }
 
@@ -92,7 +85,7 @@ public class CrisisController {
     @GetMapping("/safety-plan")
     public ResponseEntity<ApiResponse<SafetyPlanResponse>> getSafetyPlan(
             @Parameter(description = "Filter By User Id")
-            @RequestParam(required = true) String userId
+            @RequestParam(required = true) UUID userId
     ) {
 
         SafetyPlan safetyPlan = this.crisisService.getSafetyPlan(userId) ;
@@ -108,7 +101,7 @@ public class CrisisController {
     public ResponseEntity<ApiResponse<SafetyPlanResponse>> updateSafetyPlan(
             @Valid @RequestBody SafetyPlanRequest request) {
 
-        SafetyPlan safetyPlan = this.crisisService.updateSafetyPlan(request.getUserId(), request.getSafetyPlan());
+        SafetyPlanDto safetyPlan = this.crisisService.updateSafetyPlan(request.getUserId(), request.getSafetyPlan());
 
         SafetyPlanResponse safetyPlanResponse = this.mapper.toSafetyPlanResponse(safetyPlan) ;
 

@@ -1,4 +1,4 @@
 package com.digitaltherapyassistant.model;
 
-public class DistortionSuggestion {
+public class DiaryInsightsDto {
 }

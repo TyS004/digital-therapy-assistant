@@ -17,11 +17,11 @@ public class CrisisDetector {
         this.chatClient = chatClient;
     }
 
-    public CrisisDetectionResultDto analyze(String text) {
+    public CrisisDetectionResponse analyze(String text) {
         // layer 1: keyword based detection
         // layer 2: AI based semantic analysis
         // combine signals - err on the side of caution
 
-        return new CrisisDetectionResultDto() ;
+        return new CrisisDetectionResponse() ;
     }
 }

@@ -1,13 +1,14 @@
 package com.digitaltherapyassistant.service;
 
+import com.digitaltherapyassistant.dto.response.CrisisDetectionResponse;
 import com.digitaltherapyassistant.entity.CopingStrategy;
 import com.digitaltherapyassistant.entity.TrustedContact;
+import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.mapper.DtoMapper;
-import com.digitaltherapyassistant.model.CrisisDetectionResult;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.service.interfaces.CrisisServiceInterface;
-import com.digitaltherapyassistant.service.rag.CrisisDetectionResultDto;
 import com.digitaltherapyassistant.service.rag.CrisisDetector;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,26 +35,54 @@ public class CrisisService implements CrisisServiceInterface {
     }
 
     @Override
-    public List<TrustedContact> getTrustedContacts(UUID userId) {
-        return List.of();
+    public List<TrustedContact> getTrustedContacts(UUID userId) throws DatabaseException {
+        User user = this.userRepository.findById(userId).orElse(null) ;
+
+        try {
+            return user.getTrustedContacts();
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException() ;
+        }
     }
 
     @Override
-    public SafetyPlan getSafetyPlan(UUID userId) {
-        return null;
+    public SafetyPlanDto getSafetyPlan(UUID userId) throws DatabaseException {
+        User user = this.userRepository.findById(userId).orElse(null) ;
+
+        try {
+            String planText = user.getSafetyPlan();
+            List<TrustedContact> trustedContacts = user.getTrustedContacts();
+
+            return new SafetyPlanDto(planText, trustedContacts);
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException() ;
+        }
     }
 
     @Override
-    public void updateSafetyPlan(UUID userId, String safetyPlan) {
+    public SafetyPlanDto updateSafetyPlan(UUID userId, String planText) throws DatabaseException {
+
+        User user = this.userRepository.findById(userId).orElse(null) ;
+
+        try {
+            user.setSafetyPlan(safetyPlan);
+
+            List<TrustedContact> trustedContacts = user.getTrustedContacts();
+
+            return new SafetyPlanDto(planText, trustedContacts);
+        } catch (UserNotFoundException e) {
+            throw new UsernameNotFoundException() ;
+        }
 
     }
 
     @Override
-    public CrisisDetectionResult detectCrisis(UUID userId, String text) {
-        CrisisDetectionResultDto resultDto = this.crisisDetector.analyze(text) ;
+    public CrisisDetectionResponse detectCrisis(String text) throws CrisisDetectionException {
 
-        CrisisDetectionResult result = this.mapper.toCrisisDetectionResult(resultDto) ;
-
-        return result ;
+        try {
+            return this.crisisDetector.analyze(text);
+        } catch (CrisisDetectionException e) {
+            throw new CrisisDetectionException() ;
+        }
     }
 }

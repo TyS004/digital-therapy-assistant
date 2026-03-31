@@ -1,4 +1,4 @@
 package com.digitaltherapyassistant.model;
 
-public class DiaryInsights {
+public class SessionSummaryDto {
 }
