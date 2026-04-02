@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### DATABASE ###
+/data/digitaltherapy_db.lock.db
+/data/digitaltherapy_db.mv.db

@@ -11,5 +11,5 @@ public class BackCommand implements Command {
     public String getName() { return "0"; }
     public String getMenuLabel() { return "Back"; }
     
-    public void execute (Scanner in) {}
+    public boolean execute (Scanner in) { return true; }
 }

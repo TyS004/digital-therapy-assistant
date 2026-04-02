@@ -9,5 +9,4 @@ public class DigitalTherapyAssistantApplication {
     public static void main(String[] args) {
         SpringApplication.run(DigitalTherapyAssistantApplication.class, args);
     }
-
 }

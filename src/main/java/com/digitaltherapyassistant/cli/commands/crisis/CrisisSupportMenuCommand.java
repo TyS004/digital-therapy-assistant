@@ -27,7 +27,8 @@ public class CrisisSupportMenuCommand implements Command {
     public String getName() { return "5"; }
     public String getMenuLabel() { return "Crisis Support"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         crisisMenuHandler.runMenu("Crisis Menu", in);
+        return true;
     }
 }

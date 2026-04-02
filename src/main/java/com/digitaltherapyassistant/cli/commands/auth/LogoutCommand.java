@@ -4,16 +4,29 @@ import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
 
+import com.digitaltherapyassistant.cli.CLISession;
 import com.digitaltherapyassistant.cli.Command;
+import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
+
 
 @Component
 public class LogoutCommand implements Command {
-    public LogoutCommand() {}
+    private final CLISession session;
+    private final AuthAPIClient authApiClient;
+
+    public LogoutCommand(AuthAPIClient authApiClient,
+                        CLISession session) {
+        this.authApiClient = authApiClient;
+        this.session = session;
+    }
 
     public String getName() { return "c"; }
     public String getMenuLabel() { return "Logout"; }
     
-    public void execute(Scanner in) { 
-        System.out.println("Logged Out"); 
+    public boolean execute(Scanner in) { 
+        authApiClient.logout(session.getToken());
+        System.out.println("Logged Out");
+        
+        return true;
     }
 }

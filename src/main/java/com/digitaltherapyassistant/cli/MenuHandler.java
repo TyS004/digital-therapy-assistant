@@ -5,39 +5,43 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
-
 public class MenuHandler{
     private Map<String, Command> commandMap;
 
-    public MenuHandler(List<Command> commandList) {
+    public MenuHandler(List<Command> commandList) throws NullPointerException{
         commandMap = commandList.stream()
             .collect(Collectors.toMap(Command::getName, c -> c));
     }
 
-    public void runMenu(String title, Scanner in) {
-        while(true){
-            display(title);
-
-            String input = getInput(in);
-            Command command = commandMap.get(input);
-            if(command != null){
-                if(command.getMenuLabel().equals("Back")
-                    || command.getMenuLabel().equals("Exit")){ 
-                    break;
-                }
-                command.execute(in);
+    public void runMenu(String title, Scanner in){
+        while(true)
+        {
+            try { 
+                if(!processCommand(title, in)) { break; }
             }
-            else{
-                invalidOption();
-            }
+            catch(CommandLineException e) { System.out.println(e.getReason()); }
         }
+    }
+
+    public boolean processCommand(String title, Scanner in) throws CommandLineException{
+        display(title);
+
+        String input = getInput(in);
+        Command command = commandMap.get(input);
+        if(command != null){
+            if(command.getMenuLabel().equals("Back")) { return false; }
+            command.execute(in);
+        }
+        else{ throw new CommandLineException("Invalid Input, Try Again!"); }
+
+        return true;
     }
 
     public void display(String title) {
         System.out.println("\n===========================");
         System.out.println("  " + title);
         System.out.println("===========================");
+
         commandMap.forEach((key, cmd) ->
                 System.out.println(key + ". " + cmd.getMenuLabel())
         );
@@ -45,12 +49,7 @@ public class MenuHandler{
     }
 
     public String getInput(Scanner scanner) {
-        if(commandMap.get("7") != null){
-            System.out.print("Enter choice: ");
-        }
-        else{
-            System.out.print("Enter choice (0 to go back): ");
-        }
+        System.out.print("Enter choice: ");
         return scanner.nextLine().trim();
     }
 

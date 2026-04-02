@@ -9,7 +9,8 @@ public class SafetyPlanCommand implements Command {
     public String getName() { return "c"; }
     public String getMenuLabel() { return "Safety Plan"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Showing Safety Plan...");
+        return true;
     }
 }

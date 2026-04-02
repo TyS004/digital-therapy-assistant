@@ -11,7 +11,8 @@ public class SettingsCommand implements Command {
     public String getName() { return "6"; }
     public String getMenuLabel() { return "Settings"; }
     
-    public void execute (Scanner in) {
+    public boolean execute (Scanner in) {
         System.out.println("Going to Settings...");
+        return true;
     }
 }

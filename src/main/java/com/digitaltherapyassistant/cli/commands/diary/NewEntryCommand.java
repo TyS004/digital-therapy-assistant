@@ -9,7 +9,8 @@ public class NewEntryCommand implements Command {
     public String getName() { return "a"; }
     public String getMenuLabel() { return "New Entry"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Creating New Entry...");
+        return true;
     }
 }

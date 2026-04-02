@@ -19,15 +19,15 @@ public class CBTSessionsMenuCommand implements Command {
         BackCommand backCommand
     ){
         cbtMenuHandler = new MenuHandler(
-            List.of(startSessionCommand, 
-                viewSessionHistoryCommand, viewSessionLibraryCommand,
-                backCommand));
+            List.of(startSessionCommand, viewSessionHistoryCommand,
+                     viewSessionLibraryCommand, backCommand));
     }
     
     public String getName() { return "2"; }
     public String getMenuLabel() { return "CBT Sessions"; }
     
-    public void execute(Scanner in) { 
+    public boolean execute(Scanner in) { 
         cbtMenuHandler.runMenu("CBT Menu", in);
+        return true;
     }
 }

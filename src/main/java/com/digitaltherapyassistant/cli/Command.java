@@ -8,5 +8,5 @@ public interface Command {
     String getName();
     String getMenuLabel();
 
-    public void execute(Scanner in);
+    public boolean execute(Scanner in);
 }  

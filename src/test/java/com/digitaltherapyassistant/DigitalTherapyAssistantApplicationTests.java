@@ -1,13 +1,13 @@
-package com.example.digitaltherapyassistant;
+package com.digitaltherapyassistant;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+
 class DigitalTherapyAssistantApplicationTests {
 
     @Test
     void contextLoads() {
+        
     }
-
 }

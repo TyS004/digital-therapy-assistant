@@ -9,7 +9,8 @@ public class CopingStrategiesCommand implements Command {
     public String getName() { return "a"; }
     public String getMenuLabel() { return "Coping Strategies"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Showing Coping Strategies...");
+        return true;
     }
 }

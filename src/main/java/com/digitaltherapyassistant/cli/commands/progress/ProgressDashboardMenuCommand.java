@@ -29,7 +29,8 @@ public class ProgressDashboardMenuCommand implements Command {
     public String getName() { return "4"; }
     public String getMenuLabel() { return "Progress Dashboard"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         dashboardMenuHandler.runMenu("Progress Menu", in);
+        return true;
     }
 }

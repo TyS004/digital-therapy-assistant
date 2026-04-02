@@ -9,7 +9,8 @@ public class AchievementsCommand implements Command {
     public String getName() { return "c"; }
     public String getMenuLabel() { return "Achievements"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Showing Achievements...");
+        return true;
     }
 }

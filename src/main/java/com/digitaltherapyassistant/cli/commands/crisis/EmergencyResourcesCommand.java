@@ -9,7 +9,8 @@ public class EmergencyResourcesCommand implements Command {
     public String getName() { return "b"; }
     public String getMenuLabel() { return "Emergency Resources"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Showing Emergency Resources...");
+        return true;
     }
 }

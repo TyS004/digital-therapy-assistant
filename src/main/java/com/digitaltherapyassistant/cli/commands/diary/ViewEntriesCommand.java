@@ -9,7 +9,8 @@ public class ViewEntriesCommand implements Command {
     public String getName() { return "b"; }
     public String getMenuLabel() { return "View Entries"; }
     
-    public void execute(Scanner in) {
+    public boolean execute(Scanner in) {
         System.out.println("Viewing Entries...");
+        return true;
     }
 }
