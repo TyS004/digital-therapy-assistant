@@ -3,6 +3,8 @@ package com.digitaltherapyassistant.service.rag;
 import com.digitaltherapyassistant.dto.response.CrisisDetectionResponse;
 import org.springframework.ai.chat.client.ChatClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class CrisisDetector {
@@ -17,11 +19,20 @@ public class CrisisDetector {
         this.chatClient = chatClient;
     }
 
-    public CrisisDetectionResultDto analyze(String text) {
+    public CrisisDetectionResponse analyze(String text) {
+
+        List<String> keywordsDetected = new ArrayList<>() ;
+
         // layer 1: keyword based detection
+        for (String word : CRISIS_KEYWORDS) {
+            if (text.contains(word)) {
+                keywordsDetected.add(word) ;
+            }
+        }
+
         // layer 2: AI based semantic analysis
         // combine signals - err on the side of caution
 
-        return new CrisisDetectionResultDto() ;
+        return new CrisisDetectionResponse() ;
     }
 }

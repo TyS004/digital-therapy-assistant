@@ -75,21 +75,21 @@ public class KnowledgeBaseLoader {
         // 4. Load Burnout Specific Content
         documents.addAll(this.loadBurnoutContent(mapper)) ;
 
-        totalLoaded = 4 ;
+        totalLoaded = documents.size() ;
 
         if (!documents.isEmpty()) {
             vectorStore.add(documents) ;
-            log.info("Knowledge base loaded: " + totalLoaded + " total documents in vector store");
+            log.info("Knowledge base loaded: {} total documents in vector store", totalLoaded);
+
+            if (vectorStore instanceof SimpleVectorStore svs) {
+                storeFile.getParentFile().mkdirs();
+                svs.save(storeFile);
+                log.info("Vector store persisted to: {}", storeFile.getAbsolutePath());
+            }
         } else {
-
+            log.info("No documents loaded. Vector Database may be empty") ;
         }
 
-
-        if (vectorStore instanceof SimpleVectorStore svs) {
-            storeFile.getParentFile().mkdirs();
-            svs.save(storeFile);
-            log.info("Vector store persisted to: " + storeFile.getAbsolutePath());
-        }
     }
 
 

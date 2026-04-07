@@ -1,12 +1,14 @@
 package com.digitaltherapyassistant.dto.response;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
+@Data
 public class CrisisDetectionResponse {
-    private enum RiskLevel {
+    private static enum RiskLevel {
         NONE("None"),
         LOW("Low"),
         MEDIUM("Medium"),
@@ -17,14 +19,12 @@ public class CrisisDetectionResponse {
 
         private RiskLevel(String displayName) {this.displayName = displayName ; }
 
-        public String getDisplayName() {return this.displayName ;}
-
         @Override
         public String toString() {return this.displayName ;}
 
     }
 
-    private enum RecommendedAction {
+    private static enum RecommendedAction {
         NONE("None"),
         SHOW_RESOURCES("Show Resources"),
         SHOW_CRISIS_HUB("Show Crisis Hub"),
@@ -34,27 +34,13 @@ public class CrisisDetectionResponse {
 
         private RecommendedAction(String displayName) {this.displayName = displayName ; }
 
-        public String getDisplayName() {return this.displayName ;}
-
         @Override
         public String toString() {return this.displayName ;}
     }
 
-    @Getter
-    @Setter
     private RiskLevel riskLevel ;
-
-    @Getter
-    @Setter
     private List<String> keywordsDetected ;
-
-    @Getter
-    @Setter
     private RecommendedAction recommendedAction ;
-
-    @Getter
-    @Setter
     private String reasoning ;
-
 
 }
