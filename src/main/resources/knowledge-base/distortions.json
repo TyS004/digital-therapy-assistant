@@ -1,0 +1,132 @@
+[
+    {
+      "id": "all-or-nothing",
+      "name": "All-or-Nothing Thinking",
+      "description": "Seeing things in black-and-white categories with no middle ground.",
+      "examples": [
+        "If I'm not perfect, I'm a total failure.",
+        "Either I do it right or not at all."
+      ],
+      "reframingQuestions": [
+        "Is there a middle ground between these extremes?",
+        "Can you think of shades of gray in this situation?"
+      ]
+    },
+    {
+      "id": "overgeneralization",
+      "name": "Overgeneralization",
+      "description": "Making broad conclusions based on a single event.",
+      "examples": [
+        "I failed once, so I'll always fail.",
+        "Nobody ever listens to me."
+      ],
+      "reframingQuestions": [
+        "Is this truly always the case?",
+        "Can you think of exceptions to this pattern?"
+      ]
+    },
+    {
+      "id": "mental-filtering",
+      "name": "Mental Filtering",
+      "description": "Focusing exclusively on the negative details of a situation while ignoring the positive.",
+      "examples": [
+        "My boss gave me a great review but mentioned one area for improvement, so I must be terrible at my job.",
+        "I ruined the whole party because I spilled my drink."
+      ],
+      "reframingQuestions": [
+        "What positive details am I ignoring in this situation?",
+        "If a friend were looking at this, what good things would they notice?"
+      ]
+    },
+    {
+      "id": "catastrophizing",
+      "name": "Catastrophizing",
+      "description": "Expecting the worst possible outcome without considering other possibilities.",
+      "examples": [
+        "If I make a mistake, I'll definitely get fired.",
+        "This headache must be a brain tumor."
+      ],
+      "reframingQuestions": [
+        "What's the most likely outcome?",
+        "How have similar situations turned out in the past?"
+      ]
+    },
+    {
+      "id": "mind-reading",
+      "name": "Mind Reading",
+      "description": "Assuming you know what others are thinking without evidence.",
+      "examples": [
+        "They must think I'm incompetent.",
+        "She didn't smile because she hates me."
+      ],
+      "reframingQuestions": [
+        "What evidence do you have for this assumption?",
+        "Could there be other explanations for their behavior?"
+      ]
+    },
+    {
+      "id": "fortune-telling",
+      "name": "Fortune Telling",
+      "description": "Predicting that things will turn out badly without any realistic evidence.",
+      "examples": [
+        "I just know I'm going to fail this exam.",
+        "There is no point in trying because they will reject me."
+      ],
+      "reframingQuestions": [
+        "Can I really predict the future with 100% accuracy?",
+        "What is an alternative, more positive way this could play out?"
+      ]
+    },
+    {
+      "id": "emotional-reasoning",
+      "name": "Emotional Reasoning",
+      "description": "Believing that because you feel a certain way, it must be the objective truth.",
+      "examples": [
+        "I feel overwhelmed, so my problems must be impossible to solve.",
+        "I feel like a bad friend, so I must be one."
+      ],
+      "reframingQuestions": [
+        "Am I confusing a feeling with a fact?",
+        "What objective evidence contradicts how I am feeling right now?"
+      ]
+    },
+    {
+      "id": "should-statements",
+      "name": "Should Statements",
+      "description": "Using rigid rules about how you or others should behave.",
+      "examples": [
+        "I should always be productive.",
+        "They should know how I feel."
+      ],
+      "reframingQuestions": [
+        "Where does this rule come from?",
+        "What would happen if you replaced 'should' with 'prefer'?"
+      ]
+    },
+    {
+      "id": "labeling",
+      "name": "Labeling",
+      "description": "Assigning global, negative traits to yourself or others based on a single behavior.",
+      "examples": [
+        "I made a mistake, therefore I am a loser.",
+        "He cut me off in traffic, he is a complete monster."
+      ],
+      "reframingQuestions": [
+        "Is this label a fair summary of the whole person?",
+        "Can I describe the specific behavior instead of using a global label?"
+      ]
+    },
+    {
+      "id": "personalization",
+      "name": "Personalization",
+      "description": "Taking the blame for events that are not entirely under your control.",
+      "examples": [
+        "It's my fault the project failed, even though the client changed the requirements.",
+        "My child got a bad grade, I must be a terrible parent."
+      ],
+      "reframingQuestions": [
+        "What other factors contributed to this outcome?",
+        "Am I taking responsibility for someone else's choices or random circumstances?"
+      ]
+    }
+]
