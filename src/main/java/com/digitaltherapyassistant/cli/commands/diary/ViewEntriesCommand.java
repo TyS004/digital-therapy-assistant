@@ -21,25 +21,37 @@ public class ViewEntriesCommand implements Command {
     public String getMenuLabel() { return "View Entries"; }
     
     public boolean execute(Scanner in) {
-        UUID entryId = null;
+        UUID userId = null;
 
         System.out.println("Viewing Entries...");
 
-        System.out.print("Enter Entry ID: ");
-        try { entryId = UUID.fromString(in.nextLine().trim()); }
+        System.out.print("Enter User ID: ");
+        try { userId = UUID.fromString(in.nextLine().trim()); }
         catch(Exception e) { System.out.println(e.getMessage()); return false; }
 
         System.out.print("Page number (default 0): ");
         String pageInput = in.nextLine().trim();
-        int page = pageInput.isBlank() ? 0 : Integer.parseInt(pageInput);
+        int page;
+        try {
+            page = pageInput.isBlank() ? 0 : Integer.parseInt(pageInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid page number.");
+            return false;
+        }
 
         System.out.print("Page size (default 10): ");
         String sizeInput = in.nextLine().trim();
-        int size = sizeInput.isBlank() ? 10 : Integer.parseInt(sizeInput);
+        int size;
+        try {
+            size = sizeInput.isBlank() ? 10 : Integer.parseInt(sizeInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid page size.");
+            return false;
+        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
   
-        diaryAPIClient.getEntries(entryId, pageable);
+        diaryAPIClient.getEntries(userId, pageable);
         return true;
     }
 }

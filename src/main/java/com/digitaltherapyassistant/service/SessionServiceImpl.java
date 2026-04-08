@@ -27,6 +27,7 @@ import com.digitaltherapyassistant.repository.ChatMessageRepository;
 import com.digitaltherapyassistant.repository.SessionModuleRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
+import com.digitaltherapyassistant.service.interfaces.AiServiceInterface;
 
 @Service
 public class SessionServiceImpl implements SessionService{
@@ -35,18 +36,21 @@ public class SessionServiceImpl implements SessionService{
     private final UserSessionRepository userSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final SessionModuleRepository sessionModuleRepository;
+    private final AiServiceInterface aiService;
 
     public SessionServiceImpl(CbtSessionRepository cbtSessionRepository,
                                 UserRepository userRepository,
                                 UserSessionRepository userSessionRepository,
                                 ChatMessageRepository chatMessageRepository,
-                                SessionModuleRepository sessionModuleRepository
+                                SessionModuleRepository sessionModuleRepository,
+                                AiServiceInterface aiService
     ){
         this.cbtSessionRepository = cbtSessionRepository;
         this.userRepository = userRepository;
         this.userSessionRepository = userSessionRepository;
         this.chatMessageRepository = chatMessageRepository;
         this.sessionModuleRepository = sessionModuleRepository;
+        this.aiService = aiService;
     }
 
     public List<SessionModuleDto> getSessionLibrary(UUID userId){
@@ -143,9 +147,9 @@ public class SessionServiceImpl implements SessionService{
         chatMessages.add(chatMessage);
 
         response.setSessionId(sessionId);
-        response.setTimestamp(chatMessage.getTimestamp());
-        //TODO CHANGE TO AI SERVICE 
-        response.setAssistantMessage(null);
+        response.setTimestamp(chatMessage.getTimestamp()); 
+        org.springframework.ai.chat.model.ChatResponse aiResponse = aiService.generateResponse(sessionId, message);
+        response.setAssistantMessage(aiResponse == null ? null : aiResponse.toString());
         response.setMessage("Message Set");
         return response;
     }
@@ -170,7 +174,12 @@ public class SessionServiceImpl implements SessionService{
         response.setSessionId(sessionId);
         response.setStatus(userSession.getStatus());
         response.setReason(reason); 
-        response.setMessage("Session Ended");
+        SessionSummary aiSummary = aiService.summarizeSession(sessionId);
+        if (aiSummary != null && aiSummary.getMessage() != null && !aiSummary.getMessage().isBlank()) {
+            response.setMessage(aiSummary.getMessage());
+        } else {
+            response.setMessage("Session Ended");
+        }
 
         return response;
     }

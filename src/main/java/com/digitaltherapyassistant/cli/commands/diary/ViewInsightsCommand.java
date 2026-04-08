@@ -25,7 +25,7 @@ public class ViewInsightsCommand implements Command {
         try { userId = UUID.fromString(in.nextLine().trim()); }
         catch(Exception e ) { System.out.println(e.getMessage()); return false; }
 
-        diaryAPIClient.getInsights(null);
+        diaryAPIClient.getInsights(userId);
 
         return true;
     }

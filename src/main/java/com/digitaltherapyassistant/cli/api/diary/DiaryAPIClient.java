@@ -10,6 +10,6 @@ import com.digitaltherapyassistant.dto.DiaryEntryCreate;
 @Component
 public interface DiaryAPIClient {
     public void createEntry(UUID userId, DiaryEntryCreate request);
-    public void getEntries(UUID entryId, Pageable pageable);
+    public void getEntries(UUID userId, Pageable pageable);
     public void getInsights(UUID userId);
 }

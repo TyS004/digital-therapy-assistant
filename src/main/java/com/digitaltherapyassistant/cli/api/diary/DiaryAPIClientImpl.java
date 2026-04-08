@@ -1,11 +1,9 @@
 package com.digitaltherapyassistant.cli.api.diary;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +24,13 @@ public class DiaryAPIClientImpl extends APIClient implements DiaryAPIClient{
     }
 
     public void createEntry(UUID userId, DiaryEntryCreate request){
-        POST(clientURL + "/diary/entries?userId=" + userId, request, DiaryEntryResponse.class);       
+        DiaryEntryResponse response =
+            POST(clientURL + "/diary/entries?userId=" + userId, request, DiaryEntryResponse.class);
+        if (response == null) {
+            return;
+        }
+
+        System.out.println("Created entry ID: " + response.getId());
     }
 
     @Override
@@ -61,9 +65,21 @@ public class DiaryAPIClientImpl extends APIClient implements DiaryAPIClient{
 
     @Override
     public void getInsights(UUID userId) {
-        GET(
+        DiaryInsights response = GET(
             clientURL + "/diary/insights?userId=" + userId,
             DiaryInsights.class
         );
+        if (response == null) {
+            return;
+        }
+
+        System.out.println("\n=== Diary Insights ===");
+        System.out.println("Total Entries: " + response.getTotalEntries());
+        System.out.println("Average Mood Improvement: " + response.getAverageMoodImprovement());
+        System.out.println("Summary: " + response.getSummary());
+        if (response.getTopDistortions() != null) {
+            response.getTopDistortions().forEach(distortion ->
+                System.out.println("- " + distortion.getName() + ": " + distortion.getCount()));
+        }
     }
 }

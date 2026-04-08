@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
-import com.digitaltherapyassistant.cli.CLISession;
 import com.digitaltherapyassistant.cli.Command;
 import com.digitaltherapyassistant.cli.api.diary.DiaryAPIClient;
 import com.digitaltherapyassistant.dto.DiaryEntryCreate;
@@ -13,11 +12,9 @@ import com.digitaltherapyassistant.dto.DiaryEntryCreate;
 @Component
 public class NewEntryCommand implements Command {
     private final DiaryAPIClient diaryAPIClient;
-    private final CLISession session;
 
-    public NewEntryCommand(DiaryAPIClient diaryAPIClient, CLISession session){
+    public NewEntryCommand(DiaryAPIClient diaryAPIClient){
         this.diaryAPIClient = diaryAPIClient;
-        this.session = session;
     }
 
     public String getName() { return "a"; }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.digitaltherapyassistant.repository.ChatMessageRepository;
 import com.digitaltherapyassistant.repository.SessionModuleRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
+import com.digitaltherapyassistant.service.interfaces.AiServiceInterface;
 import com.digitaltherapyassistant.service.SessionServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,6 +45,7 @@ public class SessionServiceImplTest {
     @Mock private UserSessionRepository userSessionRepository;
     @Mock private ChatMessageRepository chatMessageRepository;
     @Mock private SessionModuleRepository sessionModuleRepository;
+    @Mock private AiServiceInterface aiService;
 
     @InjectMocks private SessionServiceImpl sessionService;
 
@@ -185,12 +188,11 @@ public class SessionServiceImplTest {
         when(chatMessageRepository.findAllByUserSession(userSession))
         .thenReturn(new ArrayList<>());
 
-        assertDoesNotThrow(() -> sessionService.chat(sessionId, message));
-
         ChatResponse response = sessionService.chat(sessionId, message);
         assertEquals("Message Set", response.getMessage());
         assertEquals(sessionId, response.getSessionId());
         assertNull(response.getAssistantMessage());
+        verify(aiService).generateResponse(sessionId, message);
 
         // 400 CBT Session Not Found
         when(cbtSessionRepository.findById(sessionId))
@@ -226,10 +228,9 @@ public class SessionServiceImplTest {
         when(userSessionRepository.findByCbtSession(cbtSession))
         .thenReturn(Optional.of(userSession));
 
-        assertDoesNotThrow(() -> sessionService.endSession(sessionId, reason));
-
         SessionSummary response = sessionService.endSession(sessionId, reason);
         assertEquals("Session Ended", response.getMessage());
+        verify(aiService).summarizeSession(sessionId);
         assertEquals(sessionId, response.getSessionId());
         assertEquals(Status.COMPLETED, response.getStatus());
         assertEquals(reason, response.getReason());
