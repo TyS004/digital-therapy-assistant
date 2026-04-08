@@ -1,5 +1,6 @@
 package com.digitaltherapyassistant.service.interfaces;
 
+import com.digitaltherapyassistant.dto.DiaryInsights;
 import com.digitaltherapyassistant.dto.response.crisis.CrisisDetectionResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.model.Distortion;
@@ -17,7 +18,7 @@ public interface AiServiceInterface {
 
     CrisisDetectionResponse detectCrisis(String text) ;
 
-    DiaryInsightsDto generateInsights(UUID userId) ;
+    DiaryInsights generateInsights(UUID userId) ;
 
     SessionSummary summarizeSession(UUID sessionId) ;
 

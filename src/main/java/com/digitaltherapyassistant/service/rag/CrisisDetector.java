@@ -51,11 +51,14 @@ public class CrisisDetector {
                 "}"
         , text, keywordsDetected));
 
-        chatClient.prompt().system
-
-
+        String aiResponse = chatClient.prompt()
+                .system("You are a crisis detection assistant. Analyze text for crisis indicators and return only valid JSON.")
+                .user(prompt.toString())
+                .call()
+                .content();
 
         // combine signals - err on the side of caution
+        // TODO: parse aiResponse JSON into CrisisDetectionResponse fields
 
         return new CrisisDetectionResponse() ;
     }

@@ -2,7 +2,6 @@ package com.digitaltherapyassistant.service.rag;
 
 import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.ChatMessage;
-import com.digitaltherapyassistant.entity.CognitiveDistortion;
 import com.digitaltherapyassistant.entity.UserSession;
 import com.digitaltherapyassistant.exception.ResourceNotFoundException;
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
@@ -10,7 +9,6 @@ import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
-import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +41,7 @@ public class RagContextBuilder {
         // 3. get user recent session history
         StringBuilder recentSessionString = new StringBuilder() ;
         recentSessionString.append(String.format("Recent Session History:\n")) ;
-        List<UserSession> recentSessionHistory = this.sessionRepository.findRecentSessionHistoryByUserId(userId).stream().limit(3).toList() ;
+        List<UserSession> recentSessionHistory = this.sessionRepository.findByUserIdOrderByStartedAtDesc(userId).stream().limit(3).toList() ;
         for (UserSession session : recentSessionHistory) {
             CbtSession cbtSession = session.getCbtSession() ;
             recentSessionString.append(String.format("Session Topic: %s\nDescription: %s\nObjectives: %s\nStart Time: %s\nEnd Time: %s\nMood Before: %s\nMood After: %s\n", cbtSession.getTitle(), cbtSession.getDescription(), cbtSession.getObjectives(), session.getStartedAt(), session.getEndedAt(), session.getMoodBefore(), session.getMoodAfter())) ;
@@ -52,10 +50,10 @@ public class RagContextBuilder {
 
 
         // 4. get user diary patterns
-        List<CognitiveDistortion> topDistortions = this.diaryRepository.findTopDistortionsByUser(userId, PageRequest.of(0, 3)).stream().toList();
+        List<Object[]> topDistortions = this.diaryRepository.findTopDistortionsByUser(userId).stream().limit(3).toList();
         context.append(String.format("Top User Cognitive Distortions: %s\n", topDistortions)) ;
 
-        Integer averageMoodImprovement = this.diaryRepository.getAverageMoodImprovement() ;
+        Double averageMoodImprovement = this.diaryRepository.calculateAverageMoodImprovement(userId) ;
         context.append(String.format("Average User Mood Improvement From Diaries: %s\n", averageMoodImprovement)) ;
 
 

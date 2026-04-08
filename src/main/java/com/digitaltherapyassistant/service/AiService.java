@@ -1,5 +1,6 @@
 package com.digitaltherapyassistant.service;
 
+import com.digitaltherapyassistant.dto.DiaryInsights;
 import com.digitaltherapyassistant.dto.response.crisis.CrisisDetectionResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.model.Distortion;
@@ -50,8 +51,8 @@ public class AiService implements AiServiceInterface {
     }
 
     @Override
-    public DiaryInsightsDto generateInsights(UUID userId) {
-        return new DiaryInsightsDto();
+    public DiaryInsights generateInsights(UUID userId) {
+        return null;
     }
 
     @Override
