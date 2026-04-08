@@ -12,6 +12,7 @@ import com.digitaltherapyassistant.cli.CLISession;
 import com.digitaltherapyassistant.cli.api.APIClient;
 import com.digitaltherapyassistant.dto.request.session.StartSessionRequest;
 import com.digitaltherapyassistant.dto.response.session.ActiveSession;
+import com.digitaltherapyassistant.dto.response.session.SessionDto;
 import com.digitaltherapyassistant.dto.response.session.SessionHistoryEntry;
 import com.digitaltherapyassistant.dto.response.session.SessionModuleDto;
 import com.digitaltherapyassistant.service.SessionService;
@@ -33,7 +34,10 @@ public class SessionAPIClientImpl extends APIClient implements SessionAPIClient{
 
         if(response == null) { return; }
         for(SessionModuleDto module : response){
-            System.out.println("Module ID: " + module.getModule().getId());
+            System.out.println("Module ID: " + module.getId());
+            for(SessionDto session : module.getSessions()){
+                System.out.println("    Session ID: " + session.getId());
+            }
         }
     }
 
@@ -52,7 +56,7 @@ public class SessionAPIClientImpl extends APIClient implements SessionAPIClient{
 
         if(response == null) {  System.out.println("No Session History Found"); return; }
         for(SessionHistoryEntry session : response){
-            System.out.println("Session ID: " + session.getUserSession().getId());
+            System.out.println("Session ID: " + session.getSessionId());
         }
     }
 }

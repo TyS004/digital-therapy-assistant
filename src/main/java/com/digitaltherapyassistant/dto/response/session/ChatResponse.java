@@ -1,6 +1,7 @@
 package com.digitaltherapyassistant.dto.response.session;
 
-import com.digitaltherapyassistant.entity.ChatMessage;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatResponse {
-    private ChatMessage chatMessage;
+    private UUID sessionId;
+    private String assistantMessage;
+    private LocalDateTime timestamp;
     private String message;
 }

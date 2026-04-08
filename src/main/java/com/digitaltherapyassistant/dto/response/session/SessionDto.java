@@ -12,13 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionDetail {
+public class SessionDto {
     private UUID id;
     private String title;
     private String description;
     private int durationMinutes;
-    private List<String> objectives;
     private List<Modality> modalities;
+    private List<String> objectives;
     private int orderIndex;
-    private String message;
 }

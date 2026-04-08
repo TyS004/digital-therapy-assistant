@@ -1,6 +1,9 @@
 package com.digitaltherapyassistant.dto.response.session;
 
-import com.digitaltherapyassistant.entity.UserSession;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.digitaltherapyassistant.entity.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionHistoryEntry {
+    private UUID sessionId;
+    private Status status;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
+    private int moodBefore;
+    private int moodAfter;
     private String message;
-    private UserSession userSession;
 }   

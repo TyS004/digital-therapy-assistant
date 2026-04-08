@@ -2,6 +2,7 @@ package com.digitaltherapyassistant;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +24,6 @@ import com.digitaltherapyassistant.dto.response.session.SessionHistoryEntry;
 import com.digitaltherapyassistant.dto.response.session.SessionModuleDto;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.entity.CbtSession;
-import com.digitaltherapyassistant.entity.Role;
 import com.digitaltherapyassistant.entity.SessionModule;
 import com.digitaltherapyassistant.entity.Status;
 import com.digitaltherapyassistant.entity.User;
@@ -31,6 +31,7 @@ import com.digitaltherapyassistant.entity.UserSession;
 import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.repository.CbtSessionRepository;
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
+import com.digitaltherapyassistant.repository.SessionModuleRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import com.digitaltherapyassistant.service.SessionServiceImpl;
@@ -41,32 +42,30 @@ public class SessionServiceImplTest {
     @Mock private UserRepository userRepository;
     @Mock private UserSessionRepository userSessionRepository;
     @Mock private ChatMessageRepository chatMessageRepository;
+    @Mock private SessionModuleRepository sessionModuleRepository;
 
     @InjectMocks private SessionServiceImpl sessionService;
 
     @Test
     public void testGetSessionLibrary(){
-        List<CbtSession> sessions = new ArrayList<>();
         List<SessionModule> modules = new ArrayList<>();
         for(int i = 0; i < 5; ++i){
-            CbtSession session = new CbtSession();
             SessionModule module = new SessionModule();
-
-            session.setModule(module);
-            sessions.add(session);
-            modules.add(i, module);
+            module.setId(UUID.randomUUID().toString());
+            module.setCbtSessions(new ArrayList<>());
+            modules.add(module);
         }
 
-        //200 OK
-        when(cbtSessionRepository.findAll())
-        .thenReturn(sessions);
+        when(sessionModuleRepository.findAll())
+        .thenReturn(modules);
 
         assertDoesNotThrow(() -> sessionService.getSessionLibrary(null));
         List<SessionModuleDto> response = sessionService.getSessionLibrary(null);
 
+        assertEquals(5, response.size());
         for(int i = 0; i < 5; ++i){
-            assertEquals("Set Module", response.get(i).getMessage());
-            assertEquals(modules.get(i), response.get(i).getModule());
+            assertEquals(modules.get(i).getId(), response.get(i).getId());
+            assertEquals("Retreived Session Data for Module", response.get(i).getMessage());
         }
     }
 
@@ -75,8 +74,14 @@ public class SessionServiceImplTest {
         UUID sessionId = UUID.randomUUID();
         CbtSession session = new CbtSession();
         session.setId(sessionId);
+        session.setTitle("Test Session");
+        session.setDescription("Test Description");
+        session.setDurationMinutes(30);
+        session.setObjectives(new ArrayList<>());
+        session.setModalities(new ArrayList<>());
+        session.setOrderIndex(1);
 
-        //200 OK
+        // 200 OK
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.of(session));
 
@@ -84,9 +89,13 @@ public class SessionServiceImplTest {
 
         SessionDetail response = sessionService.getSessionDetails(sessionId);
         assertEquals("Retireved Session Details", response.getMessage());
-        assertEquals(session, response.getSession());
+        assertEquals(sessionId, response.getId());
+        assertEquals("Test Session", response.getTitle());
+        assertEquals("Test Description", response.getDescription());
+        assertEquals(30, response.getDurationMinutes());
+        assertEquals(1, response.getOrderIndex());
 
-        //400 Session Not Found
+        // 400 Session Not Found
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.empty());
 
@@ -101,11 +110,12 @@ public class SessionServiceImplTest {
     
         User user = new User();
         CbtSession session = new CbtSession();
+        session.setId(sessionId);
+        session.setTitle("Test Session");
         UserSession userSession = new UserSession();
-    
         userSession.setCbtSession(session);
     
-        //200 OK
+        // 200 OK
         when(userRepository.findById(userId))
         .thenReturn(Optional.of(user));
         when(cbtSessionRepository.findById(sessionId))
@@ -117,23 +127,25 @@ public class SessionServiceImplTest {
     
         ActiveSession response = sessionService.startSession(userId, sessionId);
         assertEquals("Session Started", response.getMessage());
-        assertEquals(Status.IN_PROGRESS, response.getSession().getStatus());
+        assertEquals(sessionId, response.getSessionId());
+        assertEquals("Test Session", response.getTitle());
+        assertEquals(Status.IN_PROGRESS, response.getStatus());
     
-        //400 Session Already Started
+        // 400 Session Already Started
         when(userSessionRepository.findByCbtSession(session))
         .thenReturn(Optional.of(userSession));
     
         assertThrows(DigitalTherapyException.class,
             () -> sessionService.startSession(userId, sessionId));
     
-        //400 User Not Found
+        // 400 User Not Found
         when(userRepository.findById(userId))
         .thenReturn(Optional.empty());
     
         assertThrows(DigitalTherapyException.class,
             () -> sessionService.startSession(userId, sessionId));
     
-        //400 Session Not Found
+        // 400 Session Not Found
         when(userRepository.findById(userId))
         .thenReturn(Optional.of(user));
         when(cbtSessionRepository.findById(sessionId))
@@ -152,7 +164,7 @@ public class SessionServiceImplTest {
         UserSession userSession = new UserSession();
         userSession.setChatMessages(new ArrayList<>());
 
-        //200 OK
+        // 200 OK
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.of(cbtSession));
         when(userSessionRepository.findByCbtSession(cbtSession))
@@ -164,17 +176,17 @@ public class SessionServiceImplTest {
 
         ChatResponse response = sessionService.chat(sessionId, message);
         assertEquals("Message Set", response.getMessage());
-        assertEquals(message, response.getChatMessage().getContent());
-        assertEquals(Role.USER, response.getChatMessage().getRole());
+        assertEquals(sessionId, response.getSessionId());
+        assertNull(response.getAssistantMessage());
 
-        //400 CBT Session Not Found
+        // 400 CBT Session Not Found
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.empty());
 
         assertThrows(DigitalTherapyException.class,
             () -> sessionService.chat(sessionId, message));
 
-        //400 User Session Not Found
+        // 400 User Session Not Found
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.of(cbtSession));
         when(userSessionRepository.findByCbtSession(cbtSession))
@@ -192,7 +204,10 @@ public class SessionServiceImplTest {
         CbtSession cbtSession = new CbtSession();
         UserSession userSession = new UserSession();
 
-        //200 OK
+        userSession.setMoodBefore(5);
+        userSession.setMoodAfter(5);
+
+        // 200 OK
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.of(cbtSession));
         when(userSessionRepository.findByCbtSession(cbtSession))
@@ -202,17 +217,18 @@ public class SessionServiceImplTest {
 
         SessionSummary response = sessionService.endSession(sessionId, reason);
         assertEquals("Session Ended", response.getMessage());
-        assertEquals(cbtSession, response.getSession());
+        assertEquals(sessionId, response.getSessionId());
+        assertEquals(Status.COMPLETED, response.getStatus());
         assertEquals(reason, response.getReason());
 
-        //400 CBT Session Not Found
+        // 400 CBT Session Not Found
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.empty());
 
         assertThrows(DigitalTherapyException.class,
             () -> sessionService.endSession(sessionId, reason));
 
-        //400 User Session Not Found
+        // 400 User Session Not Found
         when(cbtSessionRepository.findById(sessionId))
         .thenReturn(Optional.of(cbtSession));
         when(userSessionRepository.findByCbtSession(cbtSession))
@@ -231,10 +247,16 @@ public class SessionServiceImplTest {
         for(int i = 0; i < 3; ++i){
             UserSession userSession = new UserSession();
             userSession.setId(UUID.randomUUID());
+            userSession.setMoodBefore(5);
+            userSession.setMoodAfter(5);
+            userSession.setStatus(Status.IN_PROGRESS);
+            userSession.setChatMessages(new ArrayList<>());
+            userSession.setEndedAt(null);
+            userSession.setUser(new User());
             userSessions.add(userSession);
         }
 
-        //200 OK
+        // 200 OK
         when(userRepository.findById(userId))
         .thenReturn(Optional.of(user));
         when(userSessionRepository.findAllByUser(user))
@@ -245,18 +267,21 @@ public class SessionServiceImplTest {
         List<SessionHistoryEntry> response = sessionService.getSessionHistory(userId);
         assertEquals(3, response.size());
         for(int i = 0; i < 3; ++i){
+            assertEquals(userSessions.get(i).getId(), response.get(i).getSessionId());
+            assertEquals(userSessions.get(i).getStatus(), response.get(i).getStatus());
+            assertEquals(userSessions.get(i).getMoodBefore(), response.get(i).getMoodBefore());
+            assertEquals(userSessions.get(i).getMoodAfter(), response.get(i).getMoodAfter());
             assertEquals("Set Session " + userSessions.get(i).getId(), response.get(i).getMessage());
-            assertEquals(userSessions.get(i), response.get(i).getUserSession());
         }
 
-        //400 User Not Found
+        // 400 User Not Found
         when(userRepository.findById(userId))
         .thenReturn(Optional.empty());
 
         assertThrows(DigitalTherapyException.class,
             () -> sessionService.getSessionHistory(userId));
 
-        //400 No Sessions Started
+        // 400 No Sessions Started
         when(userRepository.findById(userId))
         .thenReturn(Optional.of(user));
         when(userSessionRepository.findAllByUser(user))

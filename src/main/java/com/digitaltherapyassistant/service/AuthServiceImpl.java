@@ -1,7 +1,6 @@
 package com.digitaltherapyassistant.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
