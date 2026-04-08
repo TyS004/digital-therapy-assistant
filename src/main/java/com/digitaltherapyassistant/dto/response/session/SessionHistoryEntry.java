@@ -1,6 +1,5 @@
 package com.digitaltherapyassistant.dto.response.session;
 
-import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.UserSession;
 
 import lombok.AllArgsConstructor;

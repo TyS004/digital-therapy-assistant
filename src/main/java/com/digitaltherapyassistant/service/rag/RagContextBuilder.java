@@ -9,9 +9,12 @@ import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class RagContextBuilder {
     private final SimpleVectorStore vectorStore ;
     private final EmbeddingService embeddingService ;

@@ -50,7 +50,7 @@ public class SessionAPIClientImpl extends APIClient implements SessionAPIClient{
     public void getSessionHistory(UUID userId){
         List<SessionHistoryEntry> response = sessionService.getSessionHistory(userId);
 
-        if(response == null) { return; }
+        if(response == null) {  System.out.println("No Session History Found"); return; }
         for(SessionHistoryEntry session : response){
             System.out.println("Session ID: " + session.getUserSession().getId());
         }

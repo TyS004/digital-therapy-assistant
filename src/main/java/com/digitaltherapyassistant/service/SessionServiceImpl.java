@@ -20,6 +20,7 @@ import com.digitaltherapyassistant.entity.SessionModule;
 import com.digitaltherapyassistant.entity.Status;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.entity.UserSession;
+import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.repository.CbtSessionRepository;
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
@@ -59,36 +60,25 @@ public class SessionServiceImpl implements SessionService{
 
     public SessionDetail getSessionDetails (UUID sessionId){
         SessionDetail response = new SessionDetail();
-        CbtSession session = cbtSessionRepository.findById(sessionId).orElse(null);
-        if(session == null){
-            response.setMessage("Session Not Found");
-            return response;
-        }
+        CbtSession session = cbtSessionRepository.findById(sessionId)
+            .orElseThrow(() -> new DigitalTherapyException("Session Not Found"));
+
         response.setSession(session);
-        response.setMessage(null);
+        response.setMessage("Retireved Session Details");
         return response;
     }
 
     public ActiveSession startSession(UUID userId, UUID sessionId) {
         ActiveSession response = new ActiveSession();
 
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            response.setMessage("User Not Found");
-            return response;
-        }
+        User user = userRepository.findById(userId).orElseThrow
+            (() -> new DigitalTherapyException("User Not Found"));
 
-        CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElse(null);
-        if (cbtSession == null) {
-            response.setMessage("Session Not Found");
-            return response;
-        }   
+        CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElseThrow
+            (() -> new DigitalTherapyException("Session Not Found"));  
 
         UserSession userSession = userSessionRepository.findByCbtSession(cbtSession).orElse(null);
-        if(userSession != null){
-            response.setMessage("User Session Already Started");
-            return response;
-        }
+        if(userSession != null) { throw new DigitalTherapyException("User Session Already Started"); }
 
         userSession = new UserSession();
         userSession.setCbtSession(cbtSession);
@@ -107,16 +97,11 @@ public class SessionServiceImpl implements SessionService{
         ChatResponse response = new ChatResponse();
         ChatMessage chatMessage = new ChatMessage();
 
-        CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElse(null);
-        if(cbtSession == null){
-            response.setMessage("CBT Session Not Found");
-            return response;
-        }
-        UserSession userSession = userSessionRepository.findByCbtSession(cbtSession).orElse(null);
-        if(userSession == null){
-            response.setMessage("Session Not Started or Found");
-            return response;
-        }
+        CbtSession cbtSession = cbtSessionRepository.findById(sessionId).orElseThrow
+            (() -> new DigitalTherapyException("CBT Session Not Found")); 
+
+        UserSession userSession = userSessionRepository.findByCbtSession(cbtSession).orElseThrow
+            (() -> new DigitalTherapyException("User Session Not Found"));
 
         chatMessage.setContent(message);
         chatMessage.setRole(Role.USER);
@@ -135,16 +120,12 @@ public class SessionServiceImpl implements SessionService{
     public SessionSummary endSession(UUID sessionId, String reason){
         SessionSummary response = new SessionSummary();
 
-        CbtSession session = cbtSessionRepository.findById(sessionId).orElse(null);
-        if(session == null){
-            response.setMessage("CBT Session not Found");
-            return response;
-        }
-        UserSession userSession = userSessionRepository.findByCbtSession(session).orElse(null);
-        if(userSession == null){
-            response.setMessage("User Session Not Started / Not Found");
-            return response;
-        }
+        CbtSession session = cbtSessionRepository.findById(sessionId).orElseThrow
+            (() -> new DigitalTherapyException("CBT Session Not Found"));
+
+        UserSession userSession = userSessionRepository.findByCbtSession(session).orElseThrow
+            (() -> new DigitalTherapyException("User Session Not Found"));
+
         userSession.setEndedAt(LocalDateTime.now());
         userSession.setStatus(Status.COMPLETED);
         userSessionRepository.delete(userSession);
@@ -159,14 +140,11 @@ public class SessionServiceImpl implements SessionService{
     public List<SessionHistoryEntry> getSessionHistory(UUID userId){
         List<SessionHistoryEntry> response = new ArrayList<>();
 
-        User user = userRepository.findById(userId).orElse(null);
-        if(user == null){
-            return response;
-        }
-        List<UserSession> userSessions = userSessionRepository.findAllByUser(user).orElse(new ArrayList<>());
-        if(userSessions.isEmpty()){
-            return response;
-        }
+        User user = userRepository.findById(userId).orElseThrow
+            (() -> new DigitalTherapyException("User Not Found"));
+
+        List<UserSession> userSessions = userSessionRepository.findAllByUser(user).orElseThrow
+            (() -> new DigitalTherapyException("No Sessions Started"));
 
         for(UserSession session : userSessions){
             SessionHistoryEntry sessionHistory = new SessionHistoryEntry();

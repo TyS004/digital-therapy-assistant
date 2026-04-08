@@ -30,18 +30,12 @@ public class AuthController {
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request)
     { 
         AuthResponse response = authService.register(request);
-        if(response.getAccessToken() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){
         AuthResponse response = authService.login(request);
-        if(response.getAccessToken() == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }   
 
@@ -50,15 +44,11 @@ public class AuthController {
         String refreshToken = request.getRefreshToken();
         refreshToken = refreshToken.replaceAll("^\"|\"$", "");
         AuthResponse response = authService.refreshToken(refreshToken);
-
-        if(response.getAccessToken() == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody String accessToken){
+    public ResponseEntity<Void> logout(@RequestBody String accessToken){
         authService.logout(accessToken);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

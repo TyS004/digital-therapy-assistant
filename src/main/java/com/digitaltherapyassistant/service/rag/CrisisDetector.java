@@ -2,11 +2,13 @@ package com.digitaltherapyassistant.service.rag;
 
 import com.digitaltherapyassistant.dto.response.crisis.CrisisDetectionResponse;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Component
 public class CrisisDetector {
     private static final Set<String> CRISIS_KEYWORDS = Set.of(
             "suicide", "kill myself", "end it all", "no reason to live",
