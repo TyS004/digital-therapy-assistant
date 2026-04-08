@@ -64,7 +64,7 @@ public class SessionServiceImpl implements SessionService{
             .orElseThrow(() -> new DigitalTherapyException("Session Not Found"));
 
         response.setSession(session);
-        response.setMessage(null);
+        response.setMessage("Retireved Session Details");
         return response;
     }
 

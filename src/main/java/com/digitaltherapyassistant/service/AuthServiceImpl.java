@@ -78,9 +78,9 @@ public class AuthServiceImpl implements AuthService{
             throw new DigitalTherapyException("Invalid Credentials");
         }
 
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
-        UUID userId = null;
-        if(user.isPresent()) { userId = user.get().getId(); }
+        String userEmail = request.getEmail();
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        UUID userId = user.getId();
 
         response.setUserID(userId);
         response.setAccessToken(tokenProvider.generateAccessToken(request.getEmail()));
@@ -101,9 +101,8 @@ public class AuthServiceImpl implements AuthService{
         }
 
         String userEmail = tokenProvider.getEmailFromToken(refreshToken);
-        Optional<User> user = userRepository.findByEmail(userEmail);
-        UUID userId = null;
-        if(user.isPresent()) { userId = user.get().getId(); }
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        UUID userId = user.getId();
 
         response.setUserID(userId);
         response.setAccessToken(tokenProvider.generateAccessToken(userEmail));
