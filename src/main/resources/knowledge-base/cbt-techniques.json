@@ -1,0 +1,67 @@
+[
+    {
+      "id": "cognitive-restructuring",
+      "name": "Thought Challenging / Cognitive Restructuring",
+      "description": "Identifying and disputing irrational or maladaptive thoughts to replace them with more balanced alternatives.",
+      "examples": [
+        "Using a thought record to analyze the evidence for and against a negative belief.",
+        "Recognizing a cognitive distortion and actively writing down a more realistic thought."
+      ],
+      "reframingQuestions": [
+        "What is the evidence that supports or contradicts my current thought?",
+        "Is there a more helpful or realistic way to view this situation?"
+      ]
+    },
+    {
+      "id": "behavioral-activation",
+      "name": "Behavioral Activation",
+      "description": "Scheduling and engaging in positive, meaningful, or highly rewarding activities to combat depressive symptoms and lethargy.",
+      "examples": [
+        "Scheduling a 15-minute walk every morning.",
+        "Committing to calling a friend even when feeling unmotivated."
+      ],
+      "reframingQuestions": [
+        "How might taking a small, positive action right now shift my mood?",
+        "What is one small activity I used to enjoy that I can try for 10 minutes today?"
+      ]
+    },
+    {
+      "id": "exposure-techniques",
+      "name": "Exposure Techniques",
+      "description": "Gradually and systematically facing feared objects, situations, or memories in a safe environment to reduce avoidance and anxiety.",
+      "examples": [
+        "Looking at pictures of spiders before progressing to being in the same room as one.",
+        "Practicing public speaking in front of a mirror before speaking to a small group."
+      ],
+      "reframingQuestions": [
+        "What is the smallest, safest step I can take toward facing this fear?",
+        "If the worst-case scenario happened during this exposure, how would I handle it?"
+      ]
+    },
+    {
+      "id": "relaxation-mindfulness",
+      "name": "Relaxation and Mindfulness",
+      "description": "Using physiological techniques and present-moment awareness to reduce physical arousal and psychological distress.",
+      "examples": [
+        "Practicing progressive muscle relaxation before bed.",
+        "Doing a 5-minute deep breathing exercise to center oneself during a stressful workday."
+      ],
+      "reframingQuestions": [
+        "Where am I holding physical tension in my body right now?",
+        "Can I gently bring my attention back to the rhythm of my breath?"
+      ]
+    },
+    {
+      "id": "problem-solving",
+      "name": "Problem-Solving Therapy",
+      "description": "A structured method for identifying problems, brainstorming solutions, and implementing action plans.",
+      "examples": [
+        "Breaking down a massive financial debt into small, actionable monthly budgeting steps.",
+        "Creating a pros-and-cons list to decide whether to change careers."
+      ],
+      "reframingQuestions": [
+        "What is the specific, solvable problem I am facing right now?",
+        "What are three possible solutions, regardless of how silly they might seem at first?"
+      ]
+    }
+  ]

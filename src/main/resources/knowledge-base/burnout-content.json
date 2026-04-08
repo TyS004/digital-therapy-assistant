@@ -1,0 +1,54 @@
+[
+    {
+      "id": "mbi-dimensions",
+      "name": "Maslach Burnout Inventory Dimensions",
+      "description": "The three core dimensions of burnout: Emotional Exhaustion, Depersonalization (cynicism), and Reduced Personal Accomplishment.",
+      "examples": [
+        "Feeling utterly drained before the workday even begins (Exhaustion).",
+        "Treating clients or colleagues as impersonal objects rather than people (Depersonalization)."
+      ],
+      "reframingQuestions": [
+        "Which of these three dimensions is affecting me the most right now?",
+        "Am I viewing my colleagues cynically, or am I just deeply exhausted?"
+      ]
+    },
+    {
+      "id": "recovery-strategies",
+      "name": "Recovery Strategies",
+      "description": "Active and passive techniques used to replenish physical and psychological resources depleted by chronic stress.",
+      "examples": [
+        "Taking actual, unplugged vacations without checking work emails.",
+        "Engaging in restorative hobbies like gardening, painting, or yoga."
+      ],
+      "reframingQuestions": [
+        "What activities actually make me feel recharged rather than just distracted?",
+        "How can I proactively schedule recovery time into my weekly routine?"
+      ]
+    },
+    {
+      "id": "work-life-balance",
+      "name": "Work-Life Balance Techniques",
+      "description": "Methods for creating a sustainable equilibrium between professional demands and personal life.",
+      "examples": [
+        "Leaving work equipment at the office to prevent working from home.",
+        "Designating specific 'no-screen' hours during the evening to focus on family."
+      ],
+      "reframingQuestions": [
+        "What does a healthy balance between my work and personal life actually look like?",
+        "Are my current daily habits supporting my personal life, or eroding it?"
+      ]
+    },
+    {
+      "id": "boundary-setting",
+      "name": "Boundary Setting",
+      "description": "Communicating and enforcing clear limits regarding time, energy, and responsibilities to protect well-being.",
+      "examples": [
+        "Politely declining to take on a new project when already at capacity.",
+        "Setting an auto-responder stating you do not check emails after 6:00 PM."
+      ],
+      "reframingQuestions": [
+        "What is a reasonable limit I need to set to protect my mental health?",
+        "How can I communicate my boundaries clearly but respectfully to my team?"
+      ]
+    }
+  ]

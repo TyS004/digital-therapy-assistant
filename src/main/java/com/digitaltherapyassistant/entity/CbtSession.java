@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cbt_session")
+@Table(name = "cbt_session", indexes = @Index(columnList = "order_index"))
 @Data
 @NoArgsConstructor
 public class CbtSession {

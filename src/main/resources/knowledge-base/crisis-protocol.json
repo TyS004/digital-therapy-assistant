@@ -1,0 +1,54 @@
+[
+    {
+      "id": "warning-signs",
+      "name": "Warning Signs Recognition",
+      "description": "Identifying behavioral, emotional, or verbal cues that indicate a person is entering a state of crisis or danger.",
+      "examples": [
+        "Giving away prized possessions or sudden isolation.",
+        "Drastic mood swings, sudden agitation, or expressing feelings of hopelessness."
+      ],
+      "reframingQuestions": [
+        "What specific changes in behavior have I noticed that seem out of character?",
+        "Are these signs indicating immediate danger that requires urgent escalation?"
+      ]
+    },
+    {
+      "id": "de-escalation",
+      "name": "De-escalation Techniques",
+      "description": "Using verbal and non-verbal strategies to calm a highly agitated or distressed individual.",
+      "examples": [
+        "Speaking in a slow, calm, and steady voice while maintaining non-threatening body language.",
+        "Actively listening and validating their feelings without arguing or trying to 'fix' it immediately."
+      ],
+      "reframingQuestions": [
+        "Is my tone and body language communicating safety and calmness?",
+        "How can I validate their distress without necessarily agreeing with their thoughts?"
+      ]
+    },
+    {
+      "id": "safety-planning",
+      "name": "Safety Planning Steps",
+      "description": "Collaboratively creating a concrete, step-by-step plan to keep the individual safe during periods of intense distress.",
+      "examples": [
+        "Writing down a list of coping strategies and people to call when feeling overwhelmed.",
+        "Removing access to lethal means or unsafe environments."
+      ],
+      "reframingQuestions": [
+        "What are the concrete steps we can put in writing to ensure safety tonight?",
+        "Who are three specific people or organizations we can list to contact in an emergency?"
+      ]
+    },
+    {
+      "id": "emergency-resources",
+      "name": "Emergency Resources",
+      "description": "Identifying and utilizing professional services designated for immediate crisis response and intervention.",
+      "examples": [
+        "Calling the 988 Suicide & Crisis Lifeline.",
+        "Going to the nearest hospital emergency department or calling 911."
+      ],
+      "reframingQuestions": [
+        "What is the fastest way to get professional, immediate help right now?",
+        "Do we have the correct phone numbers and addresses readily available for an emergency?"
+      ]
+    }
+  ]
