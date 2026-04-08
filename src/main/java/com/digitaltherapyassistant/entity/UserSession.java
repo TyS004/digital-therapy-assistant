@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,9 +47,11 @@ public class UserSession {
 
 
     @Column(name = "mood_before")
+    @Check(constraints = "mood_before >= 1 AND mood_before <= 10")
     private Integer moodBefore ; // 1-10 -- limit 1-10 on insert
 
     @Column(name = "mood_after")
+    @Check(constraints = "mood_after >= 1 AND mood_after <= 10")
     private Integer moodAfter ; // 1-10 -- limit 1-10 on insert
 
 

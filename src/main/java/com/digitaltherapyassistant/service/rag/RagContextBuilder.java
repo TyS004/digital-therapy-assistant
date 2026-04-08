@@ -2,6 +2,7 @@ package com.digitaltherapyassistant.service.rag;
 
 import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.ChatMessage;
+import com.digitaltherapyassistant.entity.CognitiveDistortion;
 import com.digitaltherapyassistant.entity.UserSession;
 import com.digitaltherapyassistant.exception.ResourceNotFoundException;
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
@@ -9,6 +10,7 @@ import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.UUID;
 
