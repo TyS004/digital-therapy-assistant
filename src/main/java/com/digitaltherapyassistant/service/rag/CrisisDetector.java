@@ -42,6 +42,7 @@ public class CrisisDetector {
         for (String word : CRISIS_KEYWORDS) {
             if (text.toLowerCase().contains(word)) {
                 keywordsDetected.add(word);
+            }
         }
 
         // Layer 2: AI-based semantic analysis
@@ -56,9 +57,6 @@ public class CrisisDetector {
                 "Plans or intentions to harm self/others, or " +
                 "Severe Emotional distress\n\n" +
                 "Return a JSON in the following format:\n" +
-                "Plans or intentions to harm self/others, or " +
-                "Severe Emotional distress\n\n" +
-                "Return a JSON in the following format:\n" +
                 "{\n" +
                 "\"riskLevel\": \"NONE|LOW|MEDIUM|HIGH|CRITICAL\",\n" +
                 "\"keywordsDetected\": %s,\n" +
@@ -69,7 +67,6 @@ public class CrisisDetector {
         ));
 
         String aiResponse = chatClient.prompt()
-                .system("You are a crisis detection assistant. Analyze text for crisis indicators and return only valid JSON with no markdown or code fences.")
                 .system("You are a crisis detection assistant. Analyze text for crisis indicators and return only valid JSON with no markdown or code fences.")
                 .user(prompt.toString())
                 .call()
