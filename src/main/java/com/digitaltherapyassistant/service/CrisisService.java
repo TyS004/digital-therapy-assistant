@@ -7,7 +7,6 @@ import com.digitaltherapyassistant.entity.CopingStrategy;
 import com.digitaltherapyassistant.entity.TrustedContact;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.exception.DigitalTherapyException;
-import com.digitaltherapyassistant.exception.ResourceNotFoundException;
 import com.digitaltherapyassistant.mapper.DtoMapper;
 import com.digitaltherapyassistant.repository.CopingStrategyRepository;
 import com.digitaltherapyassistant.repository.UserRepository;

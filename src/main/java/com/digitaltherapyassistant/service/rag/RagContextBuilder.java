@@ -3,7 +3,6 @@ package com.digitaltherapyassistant.service.rag;
 import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.ChatMessage;
 import com.digitaltherapyassistant.entity.UserSession;
-import com.digitaltherapyassistant.exception.ResourceNotFoundException;
 import com.digitaltherapyassistant.repository.ChatMessageRepository;
 import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
