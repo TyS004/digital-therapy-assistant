@@ -29,6 +29,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryEntryRepository diaryEntryRepository;
     private final UserRepository userRepository;
     private final CognitiveDistortionRepository cognitiveDistortionRepository;
+    private final AiService aiService ;
 
     @Override
     @Transactional
@@ -94,6 +95,9 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public List<DistortionSuggestion> suggestDistortions(String thought) {
+
+        aiService.analyzeThought() ;
+
         // Stub implementation — replaced by AiService in Deliverable 6
         log.debug("Suggesting distortions for thought: {}", thought);
         List<DistortionSuggestion> suggestions = new ArrayList<>();
