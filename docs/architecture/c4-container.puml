@@ -1,0 +1,30 @@
+@startuml c4-container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container Diagram - Digital Therapy Assistant
+
+Person(patient, "Patient", "User seeking burnout recovery")
+Person(therapist, "Therapist", "Monitors patient progress")
+Person(admin, "System Admin", "Manages and maintains the platform")
+
+System_Boundary(dta, "Digital Therapy Assistant") {
+    Container(api, "Digital Therapy Spring Boot Application", "Java / Spring Boot", "Core backend handling business logic, REST API, AI integration and security")
+    ContainerDb(db, "H2 Database", "H2 File-based", "Persists users, sessions, diary entries, chat messages and distortions")
+    ContainerDb(vector, "SimpleVector Store", "Spring AI SimpleVectorStore", "Vector storage for RAG-based context retrieval")
+    Container(kb, "Knowledge Base", "JSON Files", "CBT reference materials including distortions, techniques and crisis protocols")
+    Container(cli, "Command Line Interface", "CLI", "Command Line Interface to handle backend changes to h2 database")
+}
+
+System_Ext(llm, "Anthropic Claude", "LLM provider: claude-sonnet-4")
+
+Rel(patient, api, "Makes API calls to", "HTTP/REST")
+Rel(admin, cli, "Uses ClI Commands", "CLI")
+Rel(therapist, api, "Views progress via", "HTTP/REST")
+Rel(cli, api, "Makes API Calls to", "HTTP/REST")
+Rel(api, db, "Reads and writes", "JPA/Hibernate")
+Rel(api, vector, "Performs similarity search", "Spring AI")
+Rel(kb, vector, "Loaded into at startup", "Spring @PostConstruct")
+Rel(api, llm, "Sends prompts, receives responses", "HTTPS/REST")
+
+SHOW_LEGEND()
+@enduml
