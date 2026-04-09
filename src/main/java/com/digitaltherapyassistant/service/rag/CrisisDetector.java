@@ -19,12 +19,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CrisisDetector {
-
-
     private static final Set<String> CRISIS_KEYWORDS = Set.of(
             "suicide", "kill myself", "end it all", "no reason to live",
             "better off dead", "can't go on", "want to die", "hurt myself"
-    );
     );
 
     private final ChatClient chatClient;
@@ -41,24 +38,12 @@ public class CrisisDetector {
         CrisisDetectionResponse response = new CrisisDetectionResponse();
         ObjectMapper mapper = new ObjectMapper();
 
-        // layer 1: keyword based detection
-        List<String> keywordsDetected = new ArrayList<>();
-        CrisisDetectionResponse response = new CrisisDetectionResponse();
-
         // Layer 1: Keyword-based detection (fast)
         for (String word : CRISIS_KEYWORDS) {
             if (text.toLowerCase().contains(word)) {
                 keywordsDetected.add(word);
-            if (text.toLowerCase().contains(word)) {
-                keywordsDetected.add(word);
-            }
         }
 
-        // Layer 2: AI-based semantic analysis
-        StringBuilder prompt = new StringBuilder();
-        prompt.append(String.format(
-                "Analyze the following text for crisis indicators. " +
-                "Assess risk level and recommend appropriate action." +
         // Layer 2: AI-based semantic analysis
         StringBuilder prompt = new StringBuilder();
         prompt.append(String.format(
@@ -82,13 +67,6 @@ public class CrisisDetector {
                 "}",
                 text, keywordsDetected
         ));
-                "\"riskLevel\": \"NONE|LOW|MEDIUM|HIGH|CRITICAL\",\n" +
-                "\"keywordsDetected\": %s,\n" +
-                "\"recommendedAction\": \"NONE|SHOW_RESOURCES|SHOW_CRISIS_HUB|IMMEDIATE_INTERVENTION\",\n" +
-                "\"reasoning\": \"...\"\n" +
-                "}",
-                text, keywordsDetected
-        ));
 
         String aiResponse = chatClient.prompt()
                 .system("You are a crisis detection assistant. Analyze text for crisis indicators and return only valid JSON with no markdown or code fences.")
@@ -103,8 +81,6 @@ public class CrisisDetector {
                     .replaceAll("(?s)```json\\s*", "")
                     .replaceAll("(?s)```\\s*", "")
                     .trim();
-
-            ObjectMapper mapper = new ObjectMapper();
             JsonNode json = mapper.readTree(cleaned);
 
             RiskLevel aiRiskLevel       = parseRiskLevel(json.path("riskLevel").asText("NONE"));
@@ -129,7 +105,6 @@ public class CrisisDetector {
                     ? "No crisis indicators detected."
                     : "Crisis keywords detected: " + keywordsDetected);
         }
-
         return response;
     }
 
