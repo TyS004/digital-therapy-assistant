@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/crisis")
+@RequestMapping("/api/crisis")
 @Tag(name="Crises", description="Crisis Management – Crisis Hub, Trusted Contacts, Safety Plan")
 public class CrisisController {
 
@@ -93,6 +93,7 @@ public class CrisisController {
     @Operation(summary = "Update user safety plan", description = "Update the user safety plan to new user provided information")
     @PutMapping("/safety-plan")
     public ResponseEntity<ApiResponse<SafetyPlanResponse>> updateSafetyPlan(
+            @Parameter(description = "a string containing the new safety plan")
             @Valid @RequestBody SafetyPlanUpdateRequest request) {
 
 

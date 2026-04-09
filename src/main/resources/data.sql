@@ -1,41 +1,125 @@
-INSERT INTO session_module (id) 
-SELECT 'mod-1' WHERE NOT EXISTS (SELECT 1 FROM session_module WHERE id = 'mod-1');
-
-INSERT INTO session_module (id) 
-SELECT 'mod-2' WHERE NOT EXISTS (SELECT 1 FROM session_module WHERE id = 'mod-2');
-
-INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id) 
-SELECT '550e8400-e29b-41d4-a716-446655440000', 'Introduction to CBT', 'Learn the basics of CBT', 45, 1, 'mod-1'
-WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440000');
-
-INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id) 
-SELECT '550e8400-e29b-41d4-a716-446655440001', 'Understanding Burnout', 'Identify signs of burnout', 60, 2, 'mod-1'
-WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440001');
-
-INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id) 
-SELECT '550e8400-e29b-41d4-a716-446655440002', 'Thought Challenging', 'Challenge cognitive distortions', 50, 1, 'mod-2'
-WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440002');
-
-INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id) 
-SELECT '550e8400-e29b-41d4-a716-446655440003', 'Behavioral Activation', 'Re-engage with meaningful activities', 45, 1, 'mod-2'
-WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440003');
-
-INSERT INTO cognitive_distortion (id, name, description) 
-SELECT 'all-or-nothing', 'All-or-Nothing Thinking', 'Seeing things in black-and-white categories'
-WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'all-or-nothing');
-
-INSERT INTO cognitive_distortion (id, name, description) 
-SELECT 'catastrophizing', 'Catastrophizing', 'Expecting the worst possible outcome'
-WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'catastrophizing');
-
-INSERT INTO cognitive_distortion (id, name, description) 
-SELECT 'mind-reading', 'Mind Reading', 'Assuming you know what others are thinking'
-WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'mind-reading');
-
-INSERT INTO cognitive_distortion (id, name, description) 
-SELECT 'overgeneralization', 'Overgeneralization', 'Making broad conclusions from a single event'
-WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'overgeneralization');
-
-INSERT INTO cognitive_distortion (id, name, description) 
-SELECT 'should-statements', 'Should Statements', 'Using rigid rules about how you or others should behave'
-WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'should-statements');
+-- -- INSERT INTO session_module (id)
+-- -- SELECT 'mod-1' WHERE NOT EXISTS (SELECT 1 FROM session_module WHERE id = 'mod-1');
+-- --
+-- -- INSERT INTO session_module (id)
+-- -- SELECT 'mod-2' WHERE NOT EXISTS (SELECT 1 FROM session_module WHERE id = 'mod-2');
+-- --
+-- -- INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id)
+-- -- SELECT '550e8400-e29b-41d4-a716-446655440000', 'Introduction to CBT', 'Learn the basics of CBT', 45, 1, 'mod-1'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440000');
+-- --
+-- -- INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id)
+-- -- SELECT '550e8400-e29b-41d4-a716-446655440001', 'Understanding Burnout', 'Identify signs of burnout', 60, 2, 'mod-1'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440001');
+-- --
+-- -- INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id)
+-- -- SELECT '550e8400-e29b-41d4-a716-446655440002', 'Thought Challenging', 'Challenge cognitive distortions', 50, 1, 'mod-2'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440002');
+-- --
+-- -- INSERT INTO cbt_session (id, title, description, duration_minutes, order_index, session_module_id)
+-- -- SELECT '550e8400-e29b-41d4-a716-446655440003', 'Behavioral Activation', 'Re-engage with meaningful activities', 45, 1, 'mod-2'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cbt_session WHERE id = '550e8400-e29b-41d4-a716-446655440003');
+-- --
+-- -- INSERT INTO cognitive_distortion (id, name, description)
+-- -- SELECT 'all-or-nothing', 'All-or-Nothing Thinking', 'Seeing things in black-and-white categories'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'all-or-nothing');
+-- --
+-- -- INSERT INTO cognitive_distortion (id, name, description)
+-- -- SELECT 'catastrophizing', 'Catastrophizing', 'Expecting the worst possible outcome'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'catastrophizing');
+-- --
+-- -- INSERT INTO cognitive_distortion (id, name, description)
+-- -- SELECT 'mind-reading', 'Mind Reading', 'Assuming you know what others are thinking'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'mind-reading');
+-- --
+-- -- INSERT INTO cognitive_distortion (id, name, description)
+-- -- SELECT 'overgeneralization', 'Overgeneralization', 'Making broad conclusions from a single event'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'overgeneralization');
+-- --
+-- -- INSERT INTO cognitive_distortion (id, name, description)
+-- -- SELECT 'should-statements', 'Should Statements', 'Using rigid rules about how you or others should behave'
+-- -- WHERE NOT EXISTS (SELECT 1 FROM cognitive_distortion WHERE id = 'should-statements');
+-- --
+--
+--
+--
+-- -- Insert Session Modules
+-- INSERT IGNORE INTO session_module (id) VALUES
+--                                     ('MOD_INTRO_CBT'),
+--                                     ('MOD_COGNITIVE_RESTRUCTURING');
+--
+-- -- Insert Cognitive Distortions
+-- INSERT IGNORE INTO cognitive_distortion (id, name, description) VALUES
+--                                                              ('DIST_01', 'All-or-Nothing Thinking', 'Seeing things in black and white categories.'),
+--                                                              ('DIST_02', 'Catastrophizing', 'Expecting the absolute worst to happen without justification.'),
+--                                                              ('DIST_03', 'Mind Reading', 'Assuming you know what people think without sufficient evidence.');
+--
+-- -- Insert Coping Strategies
+-- INSERT IGNORE INTO coping_strategy (id, name, description) VALUES
+--                                                         ('11111111-1111-1111-1111-111111111111', 'Box Breathing', 'A breathing technique to calm the nervous system.'),
+--                                                         ('22222222-2222-2222-2222-222222222222', 'Grounding (5-4-3-2-1)', 'Using your senses to bring focus back to the present moment.');
+--
+-- -- Insert Users
+-- INSERT IGNORE INTO users (id, email, name, password_hash, safety_plan, onboarding_complete, streak_days, onboarding_path, severity_level, created_at, updated_at) VALUES
+--                                                                                                                                                                ('33333333-3333-3333-3333-333333333333', 'alice@example.com', 'Alice Smith', 'hashed_pw_123', 'Call mom, practice box breathing.', true, 5, 'SELF', 'MODERATE', '2023-10-01 10:00:00', '2023-10-05 10:00:00'),
+--                                                                                                                                                                ('44444444-4444-4444-4444-444444444444', 'bob@example.com', 'Bob Jones', 'hashed_pw_456', 'Contact therapist.', true, 2, 'THERAPIST_REFERRED', 'SIGNIFICANT', '2023-10-02 11:30:00', '2023-10-02 11:30:00');
+--
+--
+--
+-- -- Insert CBT Sessions
+-- INSERT IGNORE INTO cbt_session (id, session_module_id, title, description, duration_minutes, order_index) VALUES
+--                                                                                                        ('55555555-5555-5555-5555-555555555555', 'MOD_INTRO_CBT', 'What is CBT?', 'Understanding the connection between thoughts, feelings, and behaviors.', 15, 1),
+--                                                                                                        ('66666666-6666-6666-6666-666666666666', 'MOD_COGNITIVE_RESTRUCTURING', 'Identifying Automatic Thoughts', 'Learning to catch negative thoughts as they happen.', 20, 1);
+--
+-- -- Insert Cognitive Distortion Examples
+-- INSERT IGNORE INTO cognitive_distortion_examples (cognitive_distortion_id, examples) VALUES
+--                                                                                   ('DIST_01', 'If I don''t get an A+, I am a total failure.'),
+--                                                                                   ('DIST_02', 'My boss wants to see me, I am definitely getting fired.'),
+--                                                                                   ('DIST_03', 'She didn''t say hi, she must hate me.');
+--
+-- -- Insert Coping Strategy Steps
+-- INSERT IGNORE INTO coping_strategy_steps (coping_strategy_steps_id, steps) VALUES
+--                                                                         ('11111111-1111-1111-1111-111111111111', '1. Inhale for 4s. 2. Hold for 4s. 3. Exhale for 4s. 4. Hold for 4s.'),
+--                                                                         ('22222222-2222-2222-2222-222222222222', 'Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste.');
+--
+-- -- Insert Trusted Contacts
+-- INSERT IGNORE INTO trusted_contact (id, user_id, name, phone, relationship) VALUES
+--                                                                          ('77777777-7777-7777-7777-777777777777', '33333333-3333-3333-3333-333333333333', 'Carol Smith', '555-0198', 'Mother'),
+--                                                                          ('88888888-8888-8888-8888-888888888888', '44444444-4444-4444-4444-444444444444', 'Dr. Adams', '555-0245', 'Therapist');
+--
+--
+--
+-- -- Insert CBT Session Modalities
+-- INSERT IGNORE INTO cbt_session_modalities (cbt_session_id, modalities) VALUES
+--                                                                     ('55555555-5555-5555-5555-555555555555', 'TEXT'),
+--                                                                     ('55555555-5555-5555-5555-555555555555', 'VIDEO'),
+--                                                                     ('66666666-6666-6666-6666-666666666666', 'TEXT');
+--
+-- -- Insert CBT Session Objectives
+-- INSERT IGNORE INTO cbt_session_objectives (cbt_session_id, objectives) VALUES
+--                                                                     ('55555555-5555-5555-5555-555555555555', 'Understand the CBT triangle.'),
+--                                                                     ('66666666-6666-6666-6666-666666666666', 'Define what an automatic thought is.');
+--
+-- -- Insert Diary Entries
+-- INSERT IGNORE INTO diary_entry (id, user_id, situation, automatic_thought, alternative_thought, mood_before, mood_after, belief_rating_before, belief_rating_after, deleted, created_at) VALUES
+--     ('99999999-9999-9999-9999-999999999999', '33333333-3333-3333-3333-333333333333', 'Made a mistake at work', 'I am incompetent and will be fired.', 'Everyone makes mistakes. I can learn from this and do better next time.', 3, 6, 8, 4, false, '2023-10-06 14:00:00');
+--
+-- -- Insert User Sessions
+-- INSERT IGNORE INTO user_session (id, user_id, cbt_session_id, status, mood_before, mood_after, started_at, ended_at) VALUES
+--                                                                                                                   ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '33333333-3333-3333-3333-333333333333', '55555555-5555-5555-5555-555555555555', 'COMPLETED', 4, 7, '2023-10-04 18:00:00', '2023-10-04 18:15:00'),
+--                                                                                                                   ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '44444444-4444-4444-4444-444444444444', '66666666-6666-6666-6666-666666666666', 'IN_PROGRESS', 3, NULL, '2023-10-06 09:00:00', NULL);
+--
+-- -- Insert Diary Entry Distortions
+-- INSERT IGNORE INTO diary_entry_distortions (diary_entry_id, cognitive_distortion_id) VALUES
+--                                                                                   ('99999999-9999-9999-9999-999999999999', 'DIST_01'),
+--                                                                                   ('99999999-9999-9999-9999-999999999999', 'DIST_02');
+--
+-- -- Insert Diary Entry Emotions
+-- INSERT IGNORE INTO diary_entry_emotions (diary_entry_id, emotions) VALUES
+--     ('99999999-9999-9999-9999-999999999999', 'SAMPLE1');
+--
+-- -- Insert Chat Messages
+-- INSERT IGNORE INTO chat_message (id, user_session_id, role, modality, content, timestamp) VALUES
+--                                                                                        ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'ASSISTANT', 'TEXT', 'Welcome to your first CBT session! How are you feeling right now?', '2023-10-04 18:01:00'),
+--                                                                                        ('dddddddd-dddd-dddd-dddd-dddddddddddd', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'USER', 'TEXT', 'I am feeling a bit anxious.', '2023-10-04 18:02:00'),
+--                                                                                        ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'ASSISTANT', 'TEXT', 'That is completely normal. Lets explore how CBT can help.', '2023-10-04 18:02:30');

@@ -2,6 +2,8 @@ package com.digitaltherapyassistant.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
@@ -50,19 +52,23 @@ public class DiaryEntry {
     private String alternativeThought;
 
     @Column(name = "mood_before")
-    @Check(constraints = "mood_before >= 1 AND mood_before <= 10")
+    @Min(1)
+    @Max(10)
     private Integer moodBefore;
 
     @Column(name = "mood_after")
-    @Check(constraints = "mood_after >= 1 AND mood_after <= 10")
+    @Min(1)
+    @Max(10)
     private Integer moodAfter;
 
     @Column(name = "belief_rating_before")
-    @Check(constraints = "belief_rating_before >= 1 AND belief_rating_before <= 10")
+    @Min(1)
+    @Max(100)
     private Integer beliefRatingBefore ;
 
     @Column(name = "belief_rating_after")
-    @Check(constraints = "belief_rating_after >= 1 AND belief_rating_after <= 10")
+    @Min(1)
+    @Max(100)
     private Integer beliefRatingAfter ;
 
     @Column(name = "created_at")
