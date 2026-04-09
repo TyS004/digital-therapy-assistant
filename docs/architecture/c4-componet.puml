@@ -1,0 +1,93 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title C4 Componet Diagram - Level 3
+
+Container(cli, "CLI Application", "Java")
+System_Ext(llm, "Anthropic Claude", "LLM")
+ContainerDb(db, "H2 Database", "H2")
+ContainerDb(vector, "SimpleVector Store", "Spring AI")
+
+Container_Boundary(api, "Digital Therapy Assistant Spring App") {
+
+    Component(authCtrl, "AuthController", "Spring MVC REST")
+    Component(sessionCtrl, "SessionController", "Spring MVC REST")
+    Component(diaryCtrl, "DiaryController", "Spring MVC REST")
+    Component(progressCtrl, "ProgressController", "Spring MVC REST")
+    Component(crisisCtrl, "CrisisController", "Spring MVC REST")
+
+    Component(authSvc, "AuthService", "Spring Service", "Services Authentication Endpoints")
+    Component(sessionSvc, "SessionService", "Spring Service", "Services CBT Session Endpoints")
+    Component(diarySvc, "DiaryService", "Spring Service", "Services Diary Endpoints")
+    Component(progressSvc, "ProgressService", "Spring Service", "Services Progress Endpoints")
+    Component(crisisSvc, "CrisisService", "Spring Service", "Services Crisis Endpoints")
+    Component(aiSvc, "AiService", "Spring Service", "Services AI Functionality")
+
+    Component(ragBuilder, "RagContextBuilder", "Component", "Assembles context from vector store, session history and diary patterns")
+    Component(kbLoader, "KnowledgeBaseLoader", "Component", "@PostConstruct loader for CBT docs into vector store")
+    Component(crisisDetector, "CrisisDetector", "Component", "Two-layer crisis detection: keyword matching and AI semantic analysis")
+    Component(llmClient, "LlmClient", "Component", "Wraps ChatClient for structured LLM calls to Anthropic Claude")
+
+    Component(userRepo, "UserRepository", "Spring Data JPA", "User CRUD and lookup by email")
+    Component(sessionRepo, "UserSessionRepository", "Spring Data JPA", "Session queries by user, status and date range")
+    Component(diaryRepo, "DiaryEntryRepository", "Spring Data JPA", "Paginated diary entries, distortion counts and mood averages")
+    Component(msgRepo, "ChatMessageRepository", "Spring Data JPA", "Chat message history per session")
+
+    Component(jwtFilter, "JwtAuthenticationFilter", "Spring Security", "Intercepts requests and validates JWT tokens")
+    Component(jwtProvider, "JwtTokenProvider", "Component", "Issues, validates and parses JWT access and refresh tokens")
+}
+
+'CLI Outgoing Relations'
+Rel(cli, authCtrl, "POST /auth/**", "HTTP")
+Rel(cli, sessionCtrl, "GET/POST /sessions/**", "HTTP")
+Rel(cli, diaryCtrl, "GET/POST /diary/**", "HTTP")
+Rel(cli, progressCtrl, "GET /progress/**", "HTTP")
+Rel(cli, crisisCtrl, "GET/POST /crisis/**", "HTTP")
+
+'Sercurity Outgoing Relations'
+Rel(jwtFilter, jwtProvider, "Validates token via")
+Rel(jwtFilter, authCtrl, "Protects")
+Rel(jwtFilter, sessionCtrl, "Protects")
+Rel(jwtFilter, diaryCtrl, "Protects")
+Rel(jwtFilter, progressCtrl, "Protects")
+Rel(jwtFilter, crisisCtrl, "Protects")
+
+'Controller Outoging Realtions'
+Rel(authCtrl, authSvc, "Uses")
+Rel(sessionCtrl, sessionSvc, "Uses")
+Rel(diaryCtrl, diarySvc, "Uses")
+Rel(progressCtrl, progressSvc, "Uses")
+Rel(crisisCtrl, crisisSvc, "Uses")
+
+'Service Outgoing Relations'
+Rel(sessionSvc, aiSvc, "Uses for chat and summarization")
+Rel(diarySvc, aiSvc, "Uses for distortion analysis and insights")
+Rel(crisisSvc, crisisDetector, "Uses")
+
+''
+Rel(aiSvc, ragBuilder, "Uses to build prompt context")
+Rel(aiSvc, llmClient, "Uses for LLM calls")
+Rel(aiSvc, crisisDetector, "Delegates crisis detection to")
+Rel(llmClient, llm, "Sends prompts to", "HTTPS")
+Rel(ragBuilder, vector, "Similarity search", "Spring AI")
+Rel(kbLoader, vector, "Loads CBT docs into", "Spring AI")
+
+''
+Rel(authSvc, userRepo, "Uses")
+Rel(sessionSvc, sessionRepo, "Uses")
+Rel(sessionSvc, userRepo, "Uses")
+Rel(diarySvc, diaryRepo, "Uses")
+Rel(ragBuilder, sessionRepo, "Fetches session history")
+Rel(ragBuilder, diaryRepo, "Fetches diary patterns")
+Rel(ragBuilder, msgRepo, "Fetches chat transcript")
+
+'Repository Outgoing Relations'
+Rel(userRepo, db, "Reads/Writes")
+Rel(sessionRepo, db, "Reads/Writes")
+Rel(diaryRepo, db, "Reads/Writes")
+Rel(msgRepo, db, "Reads/Writes")
+
+Rel(authSvc, jwtProvider, "Uses to issue tokens")
+
+SHOW_LEGEND()
+@enduml

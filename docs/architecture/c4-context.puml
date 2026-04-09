@@ -1,0 +1,25 @@
+@startuml c4-context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title C4 Context Diagram - Level 1
+
+Person(patient, "Patient", "Primary user seeking workplace burnout recovery via CBT")
+Person(therapist, "Therapist", "Monitors patient progress and outcomes")
+Person(admin, "System Administrator", "Manages and maintains the platform")
+
+System(dta, "Digital Therapy Assistant", "AI-guided Cognitive Behavioral Therapy platform for workplace burnout recovery")
+
+System_Ext(llm, "Anthropic Claude", "LLM provider for AI-powered therapeutic responses")
+System_Ext(email, "Email Service", "Sends notifications and reminders to users")
+System_Ext(ehr, "Healthcare EHR System", "FHIR export for healthcare record integration")
+
+Rel(patient, dta, "Uses for CBT sessions, diary entries, crisis support", "CLI / HTTP")
+Rel(therapist, dta, "Monitors patient progress", "HTTP")
+Rel(admin, dta, "Administers platform", "HTTP")
+
+Rel(dta, llm, "Sends prompts, receives AI responses", "HTTPS/REST")
+Rel(dta, email, "Sends notifications", "SMTP")
+Rel(dta, ehr, "Exports patient records", "FHIR/HTTPS")
+
+SHOW_LEGEND()
+@enduml
