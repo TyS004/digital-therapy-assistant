@@ -4,6 +4,7 @@ import com.digitaltherapyassistant.dto.*;
 import com.digitaltherapyassistant.entity.CognitiveDistortion;
 import com.digitaltherapyassistant.entity.DiaryEntry;
 import com.digitaltherapyassistant.entity.User;
+import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.repository.CognitiveDistortionRepository;
 import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
@@ -33,7 +34,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional
     public DiaryEntryResponse createEntry(UUID userId, DiaryEntryCreate request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+                .orElseThrow(() -> new DigitalTherapyException("User not found: " + userId));
 
         DiaryEntry entry = new DiaryEntry();
         entry.setUser(user);
@@ -71,10 +72,10 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional(readOnly = true)
     public DiaryEntryDetail getEntryDetail(UUID entryId) {
         DiaryEntry entry = diaryEntryRepository.findById(entryId)
-                .orElseThrow(() -> new IllegalArgumentException("Diary entry not found: " + entryId));
+                .orElseThrow(() -> new DigitalTherapyException("Diary entry not found: " + entryId));
 
         if (Boolean.TRUE.equals(entry.getDeleted())) {
-            throw new IllegalArgumentException("Diary entry not found: " + entryId);
+            throw new DigitalTherapyException("Diary entry not found: " + entryId);
         }
 
         return toDetail(entry);
@@ -84,7 +85,7 @@ public class DiaryServiceImpl implements DiaryService {
     @Transactional
     public void deleteEntry(UUID entryId) {
         DiaryEntry entry = diaryEntryRepository.findById(entryId)
-                .orElseThrow(() -> new IllegalArgumentException("Diary entry not found: " + entryId));
+                .orElseThrow(() -> new DigitalTherapyException("Diary entry not found: " + entryId));
 
         entry.setDeleted(true);
         diaryEntryRepository.save(entry);

@@ -15,7 +15,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI commissionCalculatorOpenAPI() {
+    public OpenAPI digitalTherapyOpenAPI() {
         return new OpenAPI()
             .info(new Info()
                 .title("Commission Calculator API")

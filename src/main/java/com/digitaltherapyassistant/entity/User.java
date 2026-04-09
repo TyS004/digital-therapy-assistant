@@ -65,5 +65,4 @@ public class User {
 
     @Column(name = "safety_plan")
     private String safetyPlan ;
-
 }

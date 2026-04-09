@@ -1,5 +1,6 @@
 package com.digitaltherapyassistant.dto.response.crisis;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -38,9 +39,16 @@ public class CrisisDetectionResponse {
         public String toString() {return this.displayName ;}
     }
 
+    @NotBlank(message = "riskLevel required")
     private RiskLevel riskLevel ;
+
+    @NotBlank(message = "detected keywords required")
     private List<String> keywordsDetected ;
+
+    @NotBlank(message = "recommended action required")
     private RecommendedAction recommendedAction ;
+
+    @NotBlank(message = "reasoning required")
     private String reasoning ;
 
     public void setRiskLevel(RiskLevel riskLevel) { this.riskLevel = riskLevel; }                                                                   

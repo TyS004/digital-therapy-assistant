@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Component
 public class KnowledgeBaseLoader {
-    private static final Logger log = LoggerFactory.getLogger(VectorStoreConfig.class);
+    private static final Logger log = LoggerFactory.getLogger(KnowledgeBaseLoader.class);
 
 
     private final VectorStore vectorStore;

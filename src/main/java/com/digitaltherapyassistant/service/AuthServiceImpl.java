@@ -1,7 +1,6 @@
 package com.digitaltherapyassistant.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,7 @@ import com.digitaltherapyassistant.dto.request.auth.LoginRequest;
 import com.digitaltherapyassistant.dto.request.auth.RegisterRequest;
 import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 import com.digitaltherapyassistant.entity.User;
+import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.security.JwtTokenProvider;
 import com.digitaltherapyassistant.security.TokenBlackListService;
@@ -41,25 +41,23 @@ public class AuthServiceImpl implements AuthService{
     public AuthResponse register(RegisterRequest request){
         AuthResponse response = new AuthResponse();
 
-        if(!userRepository.findByEmail(request.getEmail()).isPresent())
-        {
-            User user = new User();
-            user.setEmail(request.getEmail());
-            user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-            user.setOnboardingComplete(false);
-            user.setName(request.getName());
-            user.setCreatedAt(LocalDateTime.now());
+        userRepository.findByEmail(request.getEmail())
+            .ifPresent(e -> {throw new DigitalTherapyException("User Already Exists");});
+    
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setOnboardingComplete(false);
+        user.setName(request.getName());
+        user.setCreatedAt(LocalDateTime.now());
 
-            userRepository.save(user);
+        userRepository.save(user);
 
-            response.setAccessToken(tokenProvider.generateAccessToken(user.getEmail()));
-            response.setRefreshToken(tokenProvider.generateRefreshToken(user.getEmail()));
-            response.setMessage("Registered");
-            response.setUserID(user.getId());
+        response.setAccessToken(tokenProvider.generateAccessToken(user.getEmail()));
+        response.setRefreshToken(tokenProvider.generateRefreshToken(user.getEmail()));
+        response.setMessage("Registered");
+        response.setUserID(user.getId());
 
-            return response;
-        }
-        response.setMessage("User Already Exists");
         return response;
     }
 
@@ -76,13 +74,12 @@ public class AuthServiceImpl implements AuthService{
             );
         }
         catch(BadCredentialsException e){
-            response.setMessage("Invalid Credentials");
-            return response;
+            throw new DigitalTherapyException("Invalid Credentials");
         }
 
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
-        UUID userId = null;
-        if(user.isPresent()) { userId = user.get().getId(); }
+        String userEmail = request.getEmail();
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        UUID userId = user.getId();
 
         response.setUserID(userId);
         response.setAccessToken(tokenProvider.generateAccessToken(request.getEmail()));
@@ -96,18 +93,15 @@ public class AuthServiceImpl implements AuthService{
         AuthResponse response = new AuthResponse();
 
         if(tokenBlackListService.isBlacklisted(refreshToken)){
-            response.setMessage("User Logged Out");
-            return response;
+            throw new DigitalTherapyException("User Logged Out");
         }
         else if(!tokenProvider.validateToken(refreshToken)){
-            response.setMessage("Invalid Token");
-            return response;
+            throw new DigitalTherapyException("Invalid Token");
         }
 
         String userEmail = tokenProvider.getEmailFromToken(refreshToken);
-        Optional<User> user = userRepository.findByEmail(userEmail);
-        UUID userId = null;
-        if(user.isPresent()) { userId = user.get().getId(); }
+        User user = userRepository.findByEmail(userEmail).orElse(null);
+        UUID userId = user.getId();
 
         response.setUserID(userId);
         response.setAccessToken(tokenProvider.generateAccessToken(userEmail));

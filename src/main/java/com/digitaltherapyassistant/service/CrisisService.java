@@ -12,7 +12,10 @@ import com.digitaltherapyassistant.repository.CopingStrategyRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.service.interfaces.CrisisServiceInterface;
 import com.digitaltherapyassistant.service.rag.CrisisDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +23,8 @@ import java.util.UUID;
 
 @Service
 public class CrisisService implements CrisisServiceInterface {
+
+    private static final Logger log = LoggerFactory.getLogger(CrisisService.class) ;
 
     private final CrisisDetector crisisDetector ;
     private final UserRepository userRepository ;
@@ -34,6 +39,7 @@ public class CrisisService implements CrisisServiceInterface {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CrisisHubResponse getCrisisHub(UUID userId) {
         List<TrustedContact> trustedContacts = this.getTrustedContacts(userId) ;
         List<CopingStrategy> copingStrategies = this.getCopingStrategies() ;
@@ -49,6 +55,7 @@ public class CrisisService implements CrisisServiceInterface {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<CopingStrategy> getCopingStrategies() {
 
         return this.copingStrategyRepository.findAll();
@@ -56,12 +63,14 @@ public class CrisisService implements CrisisServiceInterface {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TrustedContact> getTrustedContacts(UUID userId) {
 
-        return this.userRepository.getTrustedContacts(userId);
+        return this.userRepository.getTrustedContacts(userId) ;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public SafetyPlanResponse getSafetyPlan(UUID userId) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId.toString())) ;
 
@@ -72,12 +81,14 @@ public class CrisisService implements CrisisServiceInterface {
     }
 
     @Override
+    @Transactional
     public SafetyPlanResponse updateSafetyPlan(UUID userId, String planText) {
 
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId.toString())) ;
 
         user.setSafetyPlan(planText);
         this.userRepository.save(user) ;
+        log.info("Updated User {} safety plan to {}", userId, planText) ;
 
         return this.mapper.toSafetyPlanResponse(planText) ;
     }

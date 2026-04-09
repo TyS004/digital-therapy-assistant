@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import com.digitaltherapyassistant.cli.Command;
 import com.digitaltherapyassistant.cli.api.auth.AuthAPIClient;
 import com.digitaltherapyassistant.dto.request.auth.RegisterRequest;
-import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 
 import java.util.Scanner;
 

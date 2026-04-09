@@ -2,8 +2,11 @@ package com.digitaltherapyassistant.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,15 +52,23 @@ public class DiaryEntry {
     private String alternativeThought;
 
     @Column(name = "mood_before")
+    @Min(1)
+    @Max(10)
     private Integer moodBefore;
 
     @Column(name = "mood_after")
+    @Min(1)
+    @Max(10)
     private Integer moodAfter;
 
     @Column(name = "belief_rating_before")
+    @Min(1)
+    @Max(100)
     private Integer beliefRatingBefore ;
 
     @Column(name = "belief_rating_after")
+    @Min(1)
+    @Max(100)
     private Integer beliefRatingAfter ;
 
     @Column(name = "created_at")
