@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.digitaltherapyassistant.repository.CognitiveDistortionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +41,7 @@ public class AiServiceTest {
     @Mock private DiaryEntryRepository diaryEntryRepository;
     @Mock private CbtSessionRepository cbtSessionRepository;
     @Mock private UserSessionRepository userSessionRepository;
+    @Mock private CognitiveDistortionRepository cognitiveDistortionRepository ;
 
     @Mock private ChatResponse modelChatResponse;
 
@@ -53,7 +56,8 @@ public class AiServiceTest {
                 embeddingService,
                 diaryEntryRepository,
                 cbtSessionRepository,
-                userSessionRepository);
+                userSessionRepository,
+                cognitiveDistortionRepository);
     }
 
     @Test
