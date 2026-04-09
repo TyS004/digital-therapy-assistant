@@ -23,11 +23,11 @@ public class StartNewSessionCommand implements Command {
         UUID sessionId = null;
 
         System.out.print("Enter a User ID: ");
-        try {userId = UUID.fromString(in.nextLine());}
+        try {userId = UUID.fromString(in.nextLine().trim());}
         catch(Exception e) { System.out.println(e.getMessage()); return false; }
 
         System.out.print("Enter a Session ID: ");
-        try {sessionId = UUID.fromString(in.nextLine());}
+        try {sessionId = UUID.fromString(in.nextLine().trim());}
         catch(Exception e) { System.out.println(e.getMessage()); return false; }
 
         System.out.println("Starting New Session...");

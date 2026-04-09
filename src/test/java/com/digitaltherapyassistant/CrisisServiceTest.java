@@ -10,7 +10,6 @@ import com.digitaltherapyassistant.repository.CopingStrategyRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.service.CrisisService;
 import com.digitaltherapyassistant.service.rag.CrisisDetector;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

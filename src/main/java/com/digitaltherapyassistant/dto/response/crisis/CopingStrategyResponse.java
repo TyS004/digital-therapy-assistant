@@ -1,6 +1,7 @@
 package com.digitaltherapyassistant.dto.response.crisis;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.UUID;
 
 @Data
 public class CopingStrategyResponse {
-    @NotBlank(message = "id is required")
+    @NotNull(message = "id is required")
     private UUID id ;
 
     @NotBlank(message = "name is required")

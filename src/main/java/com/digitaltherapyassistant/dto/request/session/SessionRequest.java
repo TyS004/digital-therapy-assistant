@@ -2,6 +2,7 @@ package com.digitaltherapyassistant.dto.request.session;
 
 import java.util.UUID;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SessionRequest {
+    @NotNull(message = "userId required")
     private UUID userId;
 }

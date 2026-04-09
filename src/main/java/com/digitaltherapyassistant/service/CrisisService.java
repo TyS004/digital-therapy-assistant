@@ -95,8 +95,6 @@ public class CrisisService implements CrisisServiceInterface {
 
     @Override
     public CrisisDetectionResponse detectCrisis(String text) {
-
         return this.crisisDetector.analyze(text) ;
-
     }
 }
