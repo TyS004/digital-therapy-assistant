@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.digitaltherapyassistant.cli.commands.ExitCommand;
@@ -15,6 +16,7 @@ import com.digitaltherapyassistant.cli.commands.progress.ProgressDashboardMenuCo
 import com.digitaltherapyassistant.cli.commands.settings.SettingsCommand;
 
 @Component
+@ConditionalOnProperty(name = "cli.enabled", havingValue = "true", matchIfMissing = true)
 public class DigitalTherapyCLIClient implements CommandLineRunner{
 
     private final MenuHandler menuHandler;
