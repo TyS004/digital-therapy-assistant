@@ -1,0 +1,154 @@
+@startuml c4-code
+title Code Diagram (Level 4A) - AI Service Module Class Diagram
+
+interface AiServiceInterface {
+    +generateResponse(sessionId: UUID, userMessage: String): ChatResponse
+    +analyzeThought(automaticThought: String): List<Distortion>
+    +generateReframingPrompts(thought: String, distortionIds: List<String>): List<String>
+    +detectCrisis(text: String): CrisisDetectionResponse
+    +generateInsights(userId: UUID): DiaryInsights
+    +summarizeSession(sessionId: UUID): SessionSummary
+}
+
+class AiService {
+    -crisisService: CrisisServiceInterface
+    -ragContextBuilder: RagContextBuilder
+    -chatClient: ChatClient
+    -cbtSessionRepository: CbtSessionRepository
+    -userSessionRepository: UserSessionRepository
+    +generateResponse(sessionId, userMessage): ChatResponse
+    +analyzeThought(automaticThought): List<Distortion>
+    +generateReframingPrompts(thought, distortionIds): List<String>
+    +detectCrisis(text): CrisisDetectionResponse
+    +generateInsights(userId): DiaryInsights
+    +summarizeSession(sessionId): SessionSummary
+    -getUserSessionByCbtSessionId(sessionId): UserSession
+}
+
+class RagContextBuilder {
+    -vectorStore: VectorStore
+    -sessionRepository: UserSessionRepository
+    -diaryRepository: DiaryEntryRepository
+    -chatMessageRepository: ChatMessageRepository
+    +buildContext(userId: UUID, sessionId: UUID, query: String): String
+}
+
+class KnowledgeBaseLoader {
+    -vectorStore: VectorStore
+    -storePath: String
+    +loadKnowledgeBase(): void
+}
+
+class CrisisDetector {
+    -CRISIS_KEYWORDS: Set<String>
+    -chatClient: ChatClient
+    +analyze(text: String): CrisisDetectionResponse
+}
+
+class LlmClient {
+    -chatClient: ChatClient
+    +complete(systemPrompt: String, userPrompt: String): String
+    +completeWithResponse(systemPrompt: String, userPrompt: String): ChatResponse
+}
+
+class CrisisDetectionResponse {
+    -riskLevel: String
+    -keywordsDetected: List<String>
+    -recommendedAction: String
+    -reasoning: String
+}
+
+class SessionSummary {
+    -sessionId: UUID
+    -aiSummary: String
+}
+
+AiServiceInterface <|.. AiService
+AiService --> RagContextBuilder : uses
+AiService --> LlmClient : delegates LLM calls
+AiService --> CrisisDetector : delegates crisis detection
+AiService ..> SessionSummary : returns
+AiService ..> CrisisDetectionResponse : returns
+RagContextBuilder --> VectorStore : similarity search
+KnowledgeBaseLoader --> VectorStore : loads docs into
+CrisisDetector --> LlmClient : uses for semantic analysis
+@enduml
+
+
+@startuml c4-sequence-chat
+title Code Diagram (Level 4B) - Chat Message Flow Sequence
+
+actor User
+participant "CLI\nDigitalTherapyCLIClient" as CLI
+participant "SessionController" as SC
+participant "JwtAuthFilter" as JWT
+participant "SessionService" as SS
+participant "AiService" as AI
+participant "RagContextBuilder" as RAG
+participant "LlmClient\n(Claude)" as LLM
+database "H2 Database" as DB
+
+User -> CLI: types chat message
+CLI -> SC: POST /sessions/{sessionId}/chat\n{message}
+SC -> JWT: validate JWT token
+JWT --> SC: authenticated
+
+SC -> SS: chat(sessionId, message)
+SS -> AI: generateResponse(sessionId, message)
+
+AI -> DB: cbtSessionRepository.findById(sessionId)
+DB --> AI: CbtSession
+AI -> DB: userSessionRepository.findByCbtSession(cbtSession)
+DB --> AI: UserSession
+
+AI -> RAG: buildContext(userId, sessionId, message)
+RAG -> DB: fetch recent chat messages
+RAG -> DB: fetch diary entries
+RAG -> VectorStore: similarity search(message)
+VectorStore --> RAG: relevant CBT knowledge docs
+RAG --> AI: assembled context string
+
+AI -> LLM: prompt(system: CBT assistant, user: context + message)
+LLM --> AI: ChatResponse
+
+AI --> SS: ChatResponse
+SS -> DB: save ChatMessage(role=USER, content=message)
+SS -> DB: save ChatMessage(role=ASSISTANT, content=response)
+SS --> SC: ChatResponse
+SC --> CLI: 200 OK + response text
+CLI --> User: displays AI therapeutic response
+@enduml
+
+
+@startuml c4-sequence-diary
+title Code Diagram (Level 4C) - Diary Entry with AI Distortion Analysis
+
+actor User
+participant "CLI\nNewEntryCommand" as CLI
+participant "DiaryController" as DC
+participant "JwtAuthFilter" as JWT
+participant "DiaryService" as DS
+participant "AiService" as AI
+participant "LlmClient\n(Claude)" as LLM
+database "H2 Database" as DB
+
+User -> CLI: enters situation, automatic thought,\nmood scores
+CLI -> DC: POST /diary/entries\n{userId, situation, automaticThought,\nmoodBefore, beliefRatingBefore...}
+DC -> JWT: validate JWT token
+JWT --> DC: authenticated
+
+DC -> DS: createEntry(userId, request)
+DS -> DB: save DiaryEntry (deleted=false)
+DB --> DS: saved DiaryEntry
+
+DS -> AI: analyzeThought(automaticThought)
+AI -> LLM: distortion analysis prompt\n+ available distortion types JSON
+LLM --> AI: JSON array [{distortionId, confidence, reasoning}]
+AI --> DS: List<Distortion>
+
+DS -> DB: link CognitiveDistortions to DiaryEntry (ManyToMany)
+DS --> DC: DiaryEntryResponse
+
+DC --> CLI: 201 Created + entry with distortions
+CLI --> User: entry saved\ndistortions identified and displayed
+@enduml
