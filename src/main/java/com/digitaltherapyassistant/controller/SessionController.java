@@ -25,6 +25,7 @@ import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.service.SessionService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/sessions")
@@ -60,7 +61,7 @@ public class SessionController {
             @Parameter(description = "filter by session id")
             @PathVariable UUID sessionId,
             @Parameter(description = "start a user session with userId")
-            @RequestBody StartSessionRequest request){
+            @Valid @RequestBody StartSessionRequest request){
         ActiveSession response = sessionService.startSession(request.getUserId(), sessionId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

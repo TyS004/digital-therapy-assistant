@@ -14,6 +14,7 @@ import com.digitaltherapyassistant.dto.response.auth.AuthResponse;
 import com.digitaltherapyassistant.service.AuthService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(
             @Parameter(description = "basic user information: name, email, and password")
-            @RequestBody RegisterRequest request)
+            @Valid @RequestBody RegisterRequest request)
     { 
         AuthResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -42,7 +43,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Parameter(description = "basic user login information: email and password")
-            @RequestBody LoginRequest request){
+            @Valid @RequestBody LoginRequest request){
         AuthResponse response = authService.login(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }   
@@ -51,7 +52,7 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             @Parameter(description = "refresh token")
-            @RequestBody RefreshRequest request){
+            @Valid @RequestBody RefreshRequest request){
         String refreshToken = request.getRefreshToken();
         refreshToken = refreshToken.replaceAll("^\"|\"$", "");
         AuthResponse response = authService.refreshToken(refreshToken);
@@ -62,7 +63,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @Parameter(description = "the access token")
-            @RequestBody String accessToken){
+            @Valid @RequestBody String accessToken){
         authService.logout(accessToken);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

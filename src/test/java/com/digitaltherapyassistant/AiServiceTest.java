@@ -1,22 +1,23 @@
 package com.digitaltherapyassistant;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
 
+import com.digitaltherapyassistant.dto.DiaryInsights;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.User;
@@ -110,5 +111,27 @@ public class AiServiceTest {
         assertNotNull(summary);
         assertEquals(cbtSessionId, summary.getSessionId());
         assertEquals("Session summary text", summary.getAiSummary());
+    }
+
+    @Test
+    public void testGenerateInsights() {
+        UUID userId = UUID.randomUUID();
+        
+        when(diaryEntryRepository.findByUserIdAndDeletedFalse(userId)).thenReturn(List.of());
+        when(diaryEntryRepository.calculateAverageMoodImprovement(userId)).thenReturn(3.0);
+        when(diaryEntryRepository.findTopDistortionsByUser(userId)).thenReturn(List.of());
+        when(chatClient.prompt()
+            .system("You are a CBT therapist providing insights on a patient's progress. Be encouraging and specific.")                              
+            .user("User has 0 diary entries, average mood improvement of 3.00. Top distortions: . Summarize their progress.")                        
+            .call()                                                                                                                                  
+            .content()).thenReturn("Great progress!");       
+        
+        DiaryInsights result = aiService.generateInsights(userId);
+
+        assertNotNull(result);
+        assertEquals(0, result.getTotalEntries());
+        assertEquals(3.0, result.getAverageMoodImprovement());
+        assertEquals("Great progress!", result.getSummary());
+
     }
 }

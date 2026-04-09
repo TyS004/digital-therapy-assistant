@@ -20,12 +20,6 @@ public class VectorStoreConfig {
 
     private static final Logger log = LoggerFactory.getLogger(VectorStoreConfig.class);
 
-
-    @Bean
-    public ChatClient chatClient(ChatClient.Builder builder) {
-        return builder.build();
-    }
-
     @Bean
     public SimpleVectorStore vectorStore(EmbeddingModel embeddingModel,
                                          @Value("${app.vectorstore.file-path:data/vectorstore.json}") String vectorStoreFilePath) {
@@ -40,7 +34,6 @@ public class VectorStoreConfig {
             log.info("No persisted vector store found at: {}. Will create on first document load.",
                     storeFile.getAbsolutePath());
         }
-
         return store;
     }
 }

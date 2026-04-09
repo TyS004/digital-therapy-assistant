@@ -1,6 +1,7 @@
 package com.digitaltherapyassistant.dto.request.crisis;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.UUID;
@@ -8,7 +9,7 @@ import java.util.UUID;
 @Data
 public class SafetyPlanUpdateRequest {
 
-    @NotBlank(message = "userId is required")
+    @NotNull(message = "userId is required")
     private UUID userId ;
 
     @NotBlank(message = "safetyPlan text is required")
