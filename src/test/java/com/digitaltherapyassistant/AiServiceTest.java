@@ -22,9 +22,11 @@ import com.digitaltherapyassistant.entity.CbtSession;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.entity.UserSession;
 import com.digitaltherapyassistant.repository.CbtSessionRepository;
+import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import com.digitaltherapyassistant.service.AiService;
 import com.digitaltherapyassistant.service.interfaces.CrisisServiceInterface;
+import com.digitaltherapyassistant.service.rag.EmbeddingService;
 import com.digitaltherapyassistant.service.rag.RagContextBuilder;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +34,8 @@ public class AiServiceTest {
     @Mock private CrisisServiceInterface crisisService;
     @Mock private RagContextBuilder ragContextBuilder;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS) private ChatClient chatClient;
+    @Mock private EmbeddingService embeddingService;
+    @Mock private DiaryEntryRepository diaryEntryRepository;
     @Mock private CbtSessionRepository cbtSessionRepository;
     @Mock private UserSessionRepository userSessionRepository;
 
@@ -45,6 +49,8 @@ public class AiServiceTest {
                 crisisService,
                 ragContextBuilder,
                 chatClient,
+                embeddingService,
+                diaryEntryRepository,
                 cbtSessionRepository,
                 userSessionRepository);
     }

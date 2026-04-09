@@ -25,7 +25,7 @@ public class CrisisAPIClientImpl extends APIClient implements CrisisAPIClient {
     @Override
     public void getCrisisHub(UUID userId) {
         ApiResponse<CrisisHubResponse> response = GET(
-                clientURL + "api/crisis?userId=" + userId,
+                clientURL + "/api/crisis?userId=" + userId,
                 new ParameterizedTypeReference<ApiResponse<CrisisHubResponse>>() {});
         if (response == null || response.getData() == null) {
             return;
@@ -50,7 +50,7 @@ public class CrisisAPIClientImpl extends APIClient implements CrisisAPIClient {
     @Override
     public void getCopingStrategies() {
         ApiResponse<List<CopingStrategyResponse>> response = GET(
-                clientURL + "api/crisis/coping-strategies",
+                clientURL + "/api/crisis/coping-strategies",
                 new ParameterizedTypeReference<ApiResponse<List<CopingStrategyResponse>>>() {});
         if (response == null || response.getData() == null) {
             return;
@@ -65,7 +65,7 @@ public class CrisisAPIClientImpl extends APIClient implements CrisisAPIClient {
     @Override
     public void getSafetyPlan(UUID userId) {
         ApiResponse<SafetyPlanResponse> response = GET(
-                clientURL + "api/crisis/safety-plan?userId=" + userId,
+                clientURL + "/api/crisis/safety-plan?userId=" + userId,
                 new ParameterizedTypeReference<ApiResponse<SafetyPlanResponse>>() {});
         if (response == null || response.getData() == null) {
             return;
