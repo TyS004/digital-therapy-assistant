@@ -14,9 +14,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getReason());
     }
 
-    // //SERVER ERROR
-    // @ExceptionHandler(Exception.class)
-    // public ResponseEntity<?> HttpException(Exception e){
-    //     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
-    // }s
+    //SERVER ERROR
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> HttpException(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+    }
 }

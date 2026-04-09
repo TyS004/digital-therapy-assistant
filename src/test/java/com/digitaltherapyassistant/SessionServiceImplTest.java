@@ -231,6 +231,7 @@ public class SessionServiceImplTest {
         SessionSummary response = sessionService.endSession(sessionId, reason);
         assertEquals("Session Ended", response.getMessage());
         verify(aiService).summarizeSession(sessionId);
+
         assertEquals(sessionId, response.getSessionId());
         assertEquals(Status.COMPLETED, response.getStatus());
         assertEquals(reason, response.getReason());

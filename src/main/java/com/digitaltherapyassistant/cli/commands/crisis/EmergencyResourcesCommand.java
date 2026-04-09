@@ -24,8 +24,7 @@ public class EmergencyResourcesCommand implements Command {
         System.out.print("Enter User ID: ");
         try { userId = UUID.fromString(in.nextLine().trim()); }
         catch (Exception e) { System.out.println(e.getMessage()); return false; }
-
-        System.out.println("Showing Emergency Resources...");
+        
         crisisAPIClient.getCrisisHub(userId);
         return true;
     }

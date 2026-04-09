@@ -9,6 +9,7 @@ import com.digitaltherapyassistant.entity.DiaryEntry;
 import com.digitaltherapyassistant.entity.Status;
 import com.digitaltherapyassistant.entity.User;
 import com.digitaltherapyassistant.entity.UserSession;
+import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
@@ -144,7 +145,7 @@ public class ProgressServiceImpl implements ProgressService {
 
     private User getUser(UUID userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+                .orElseThrow(() -> new DigitalTherapyException("User not found: " + userId));
     }
 
     private List<String> buildRecommendations(String severity, int streak, long completed) {

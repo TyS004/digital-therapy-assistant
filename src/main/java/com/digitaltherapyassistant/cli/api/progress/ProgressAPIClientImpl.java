@@ -23,7 +23,7 @@ public class ProgressAPIClientImpl extends APIClient implements ProgressAPIClien
 
     @Override
     public void getWeeklySummary(UUID userId) {
-        WeeklySummary response = GET(clientURL + "/progress/weekly?userId=" + userId, WeeklySummary.class);
+        WeeklySummary response = GET(clientURL + "/api/progress/weekly?userId=" + userId, WeeklySummary.class);
         if (response == null) {
             return;
         }
@@ -38,7 +38,7 @@ public class ProgressAPIClientImpl extends APIClient implements ProgressAPIClien
 
     @Override
     public void getMonthlyTrends(UUID userId) {
-        MonthlyTrends response = GET(clientURL + "/progress/monthly?userId=" + userId, MonthlyTrends.class);
+        MonthlyTrends response = GET(clientURL + "/api/progress/monthly?userId=" + userId, MonthlyTrends.class);
         if (response == null) {
             return;
         }
@@ -58,7 +58,7 @@ public class ProgressAPIClientImpl extends APIClient implements ProgressAPIClien
     @Override
     public void getAchievements(UUID userId) {
         List<Achievement> response = GET(
-                clientURL + "/progress/achievements?userId=" + userId,
+                clientURL + "/api/progress/achievements?userId=" + userId,
                 new ParameterizedTypeReference<List<Achievement>>() {});
         if (response == null) {
             return;

@@ -25,7 +25,7 @@ public class DiaryAPIClientImpl extends APIClient implements DiaryAPIClient{
 
     public void createEntry(UUID userId, DiaryEntryCreate request){
         DiaryEntryResponse response =
-            POST(clientURL + "/diary/entries?userId=" + userId, request, DiaryEntryResponse.class);
+            POST(clientURL + "/api/diary/entries?userId=" + userId, request, DiaryEntryResponse.class);
         if (response == null) {
             return;
         }
@@ -36,7 +36,7 @@ public class DiaryAPIClientImpl extends APIClient implements DiaryAPIClient{
     @Override
     public void getEntries(UUID userId, Pageable pageable) {
         RestPageResponse<DiaryEntrySummary> response = GET(
-            clientURL + "/diary/entries?userId=" + userId
+            clientURL + "/api/diary/entries?userId=" + userId
                 + "&page=" + pageable.getPageNumber()
                 + "&size=" + pageable.getPageSize(),
             new ParameterizedTypeReference<RestPageResponse<DiaryEntrySummary>>() {}
@@ -66,7 +66,7 @@ public class DiaryAPIClientImpl extends APIClient implements DiaryAPIClient{
     @Override
     public void getInsights(UUID userId) {
         DiaryInsights response = GET(
-            clientURL + "/diary/insights?userId=" + userId,
+            clientURL + "/api/diary/insights?userId=" + userId,
             DiaryInsights.class
         );
         if (response == null) {

@@ -69,7 +69,7 @@ public class DiaryController {
         log.debug("DELETE /diary/entries/{}", entryId);
         diaryService.deleteEntry(entryId);
         return ResponseEntity.noContent().build();
-    }
+    }   
 
     @Operation(summary = "get the distortions related to a diary entry", description = "get cognitive distortions from a diary entry")
     @PostMapping("/distortions/suggest")

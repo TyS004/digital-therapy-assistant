@@ -62,7 +62,7 @@ public class SessionController {
             @Parameter(description = "start a user session with userId")
             @RequestBody StartSessionRequest request){
         ActiveSession response = sessionService.startSession(request.getUserId(), sessionId);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary="chat with the chatbot", description="send a message to the chatbot and receive a response")

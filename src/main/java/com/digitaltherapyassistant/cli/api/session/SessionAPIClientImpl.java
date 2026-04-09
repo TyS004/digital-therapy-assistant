@@ -33,10 +33,19 @@ public class SessionAPIClientImpl extends APIClient implements SessionAPIClient{
                 new ParameterizedTypeReference<List<SessionModuleDto>>() {});
 
         if(response == null) { return; }
-        for(SessionModuleDto module : response){
-            System.out.println("Module ID: " + module.getId());
-            for(SessionDto session : module.getSessions()){
-                System.out.println("    Session ID: " + session.getId());
+
+        System.out.println("\n=== Session Library ===");
+        for (SessionModuleDto module : response) {
+            System.out.println("\nModule: " + module.getId());
+            System.out.println("  Sessions:");
+            for (SessionDto session : module.getSessions()) {
+                System.out.printf("    [%d] %s%n", session.getOrderIndex(), session.getTitle());
+                System.out.printf("        Duration : %d min%n", session.getDurationMinutes());
+                System.out.printf("        Modalities: %s%n", session.getModalities());
+                if (session.getObjectives() != null && !session.getObjectives().isEmpty()) {
+                    System.out.println("        Objectives:");
+                    session.getObjectives().forEach(o -> System.out.println("          - " + o));
+                }
             }
         }
     }
@@ -49,14 +58,25 @@ public class SessionAPIClientImpl extends APIClient implements SessionAPIClient{
             POST(clientURL + "/api/sessions/" + sessionId + "/start", 
                 request, ActiveSession.class);
         if(response == null) { return; }
+        System.out.println("Started Session");
     }
 
     public void getSessionHistory(UUID userId){
         List<SessionHistoryEntry> response = sessionService.getSessionHistory(userId);
 
         if(response == null) {  System.out.println("No Session History Found"); return; }
-        for(SessionHistoryEntry session : response){
-            System.out.println("Session ID: " + session.getSessionId());
+        
+        System.out.println("\n=== Session History ===");
+        for (SessionHistoryEntry entry : response) {
+            System.out.println("\n  Session ID : " + entry.getSessionId());
+            System.out.println("  Status     : " + entry.getStatus());
+            System.out.println("  Started    : " + entry.getStartedAt());
+            System.out.println("  Ended      : " + (entry.getEndedAt() != null ? entry.getEndedAt() : "In Progress"));
+            System.out.printf( "  Mood       : %d → %d%n", entry.getMoodBefore(), entry.getMoodAfter());
+            if (entry.getMessage() != null && !entry.getMessage().isBlank()) {
+                System.out.println("  Message    : " + entry.getMessage());
+            }
+            System.out.println("  " + "-".repeat(40));
         }
     }
 }

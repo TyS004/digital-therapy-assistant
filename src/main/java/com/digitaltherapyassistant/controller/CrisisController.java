@@ -37,8 +37,6 @@ public class CrisisController {
         this.mapper = mapper ;
     }
 
-
-
     @Operation(summary = "Get the crisis hub", description = "Retrieve safety plan, trusted contacts, and coping strategies filtered by User Id")
     @GetMapping
     public ResponseEntity<ApiResponse<CrisisHubResponse>> getCrisisHub(

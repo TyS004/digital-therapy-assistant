@@ -24,7 +24,6 @@ public class ViewSessionHistoryCommand implements Command {
         try {userId = UUID.fromString(in.nextLine());}
         catch(Exception e) { System.out.println(e.getMessage()); return false; }
 
-        System.out.println("Viewing Session History of User: " + userId);
         sessionAPIClient.getSessionHistory(userId);
         
         return true;

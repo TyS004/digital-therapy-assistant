@@ -17,7 +17,6 @@ public class CopingStrategiesCommand implements Command {
     public String getMenuLabel() { return "Coping Strategies"; }
     
     public boolean execute(Scanner in) {
-        System.out.println("Showing Coping Strategies...");
         crisisAPIClient.getCopingStrategies();
         return true;
     }

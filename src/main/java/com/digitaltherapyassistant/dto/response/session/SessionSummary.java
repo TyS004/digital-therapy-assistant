@@ -20,5 +20,6 @@ public class SessionSummary {
     private int moodBefore;
     private int moodAfter;
     private String reason;
+    private String aiSummary;
     private String message;
 }

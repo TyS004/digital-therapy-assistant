@@ -46,13 +46,13 @@ public class DiaryAPIClientImplTest {
             UUID.randomUUID(), userId, "s", "a", List.of(), List.of(), "alt", 5, 7, 70, 40, null);
 
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId),
             eq(HttpMethod.POST), any(), eq(DiaryEntryResponse.class)))
             .thenReturn(ResponseEntity.ok(response));
 
         diaryAPIClient.createEntry(userId, request);
         verify(restTemplate).exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId),
             eq(HttpMethod.POST), any(), eq(DiaryEntryResponse.class));
     }
 
@@ -66,13 +66,13 @@ public class DiaryAPIClientImplTest {
         page.setTotalElements(1);
 
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId + "&page=0&size=10"),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId + "&page=0&size=10"),
             eq(HttpMethod.GET), any(), org.mockito.ArgumentMatchers.<ParameterizedTypeReference<RestPageResponse<DiaryEntrySummary>>>any()))
             .thenReturn(ResponseEntity.ok(page));
 
         diaryAPIClient.getEntries(userId, PageRequest.of(0, 10));
         verify(restTemplate).exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId + "&page=0&size=10"),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId + "&page=0&size=10"),
             eq(HttpMethod.GET), any(), org.mockito.ArgumentMatchers.<ParameterizedTypeReference<RestPageResponse<DiaryEntrySummary>>>any());
     }
 
@@ -81,13 +81,13 @@ public class DiaryAPIClientImplTest {
         UUID userId = UUID.randomUUID();
         DiaryInsights insights = new DiaryInsights(3, 1.5, List.of(), "Good progress");
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/insights?userId=" + userId),
+            eq("http://localhost:8080/api/diary/insights?userId=" + userId),
             eq(HttpMethod.GET), any(), eq(DiaryInsights.class)))
             .thenReturn(ResponseEntity.ok(insights));
 
         diaryAPIClient.getInsights(userId);
         verify(restTemplate).exchange(
-            eq("http://localhost:8080/diary/insights?userId=" + userId),
+            eq("http://localhost:8080/api/diary/insights?userId=" + userId),
             eq(HttpMethod.GET), any(), eq(DiaryInsights.class));
     }
 
@@ -95,7 +95,7 @@ public class DiaryAPIClientImplTest {
     public void createEntryNullResponse() {
         UUID userId = UUID.randomUUID();
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId),
             eq(HttpMethod.POST), any(), eq(DiaryEntryResponse.class)))
             .thenReturn(ResponseEntity.ok(null));
 
@@ -106,7 +106,7 @@ public class DiaryAPIClientImplTest {
     public void getEntriesNullResponse() {
         UUID userId = UUID.randomUUID();
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId + "&page=0&size=10"),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId + "&page=0&size=10"),
             eq(HttpMethod.GET), any(), org.mockito.ArgumentMatchers.<ParameterizedTypeReference<RestPageResponse<DiaryEntrySummary>>>any()))
             .thenReturn(ResponseEntity.ok(null));
 
@@ -119,7 +119,7 @@ public class DiaryAPIClientImplTest {
         RestPageResponse<DiaryEntrySummary> page = new RestPageResponse<>();
         page.setContent(List.of());
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/entries?userId=" + userId + "&page=1&size=5"),
+            eq("http://localhost:8080/api/diary/entries?userId=" + userId + "&page=1&size=5"),
             eq(HttpMethod.GET), any(), org.mockito.ArgumentMatchers.<ParameterizedTypeReference<RestPageResponse<DiaryEntrySummary>>>any()))
             .thenReturn(ResponseEntity.ok(page));
 
@@ -132,7 +132,7 @@ public class DiaryAPIClientImplTest {
         DiaryInsights insights = new DiaryInsights(1, 0.5,
                 List.of(new DiaryInsights.TopDistortion("d1", "All-or-nothing", 2)), "s");
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/insights?userId=" + userId),
+            eq("http://localhost:8080/api/diary/insights?userId=" + userId),
             eq(HttpMethod.GET), any(), eq(DiaryInsights.class)))
             .thenReturn(ResponseEntity.ok(insights));
 
@@ -143,7 +143,7 @@ public class DiaryAPIClientImplTest {
     public void getInsightsNullResponse() {
         UUID userId = UUID.randomUUID();
         when(restTemplate.exchange(
-            eq("http://localhost:8080/diary/insights?userId=" + userId),
+            eq("http://localhost:8080/api/diary/insights?userId=" + userId),
             eq(HttpMethod.GET), any(), eq(DiaryInsights.class)))
             .thenReturn(ResponseEntity.ok(null));
 

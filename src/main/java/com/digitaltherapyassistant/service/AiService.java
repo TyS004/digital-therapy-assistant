@@ -96,7 +96,7 @@ public class AiService implements AiServiceInterface {
 
         SessionSummary summary = new SessionSummary();
         summary.setSessionId(sessionId);
-        summary.setMessage(summaryText);
+        summary.setAiSummary(summaryText);
         return summary;
     }
 

@@ -29,6 +29,8 @@ import com.digitaltherapyassistant.repository.UserRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import com.digitaltherapyassistant.service.interfaces.AiServiceInterface;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SessionServiceImpl implements SessionService{
     private final CbtSessionRepository cbtSessionRepository;
@@ -53,6 +55,7 @@ public class SessionServiceImpl implements SessionService{
         this.aiService = aiService;
     }
 
+    @Transactional
     public List<SessionModuleDto> getSessionLibrary(UUID userId){
         List<SessionModule> modules = sessionModuleRepository.findAll();
         List<SessionModuleDto> response = new ArrayList<>();
@@ -116,6 +119,7 @@ public class SessionServiceImpl implements SessionService{
         userSession.setStartedAt(LocalDateTime.now());
         userSession.setChatMessages(new ArrayList<>());
         userSession.setMoodBefore(5);
+        userSession.setMoodAfter(5);
         userSessionRepository.save(userSession);
 
         response.setMoodBefore(userSession.getMoodBefore());
@@ -175,12 +179,10 @@ public class SessionServiceImpl implements SessionService{
         response.setStatus(userSession.getStatus());
         response.setReason(reason); 
         SessionSummary aiSummary = aiService.summarizeSession(sessionId);
-        if (aiSummary != null && aiSummary.getMessage() != null && !aiSummary.getMessage().isBlank()) {
-            response.setMessage(aiSummary.getMessage());
-        } else {
-            response.setMessage("Session Ended");
+        if (aiSummary != null && aiSummary.getMessage() != null) {
+            response.setAiSummary(aiSummary.getAiSummary());
         }
-
+        response.setMessage("Session Ended");
         return response;
     }
     

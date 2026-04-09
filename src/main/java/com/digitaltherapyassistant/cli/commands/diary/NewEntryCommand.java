@@ -75,7 +75,6 @@ public class NewEntryCommand implements Command {
         request.setBeliefRatingAfter(beliefAfter);
 
         diaryAPIClient.createEntry(userId, request);
-        System.out.println("Diary entry created successfully.");
         return true;
     }
 

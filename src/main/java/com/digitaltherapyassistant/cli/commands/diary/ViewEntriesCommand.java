@@ -23,8 +23,6 @@ public class ViewEntriesCommand implements Command {
     public boolean execute(Scanner in) {
         UUID userId = null;
 
-        System.out.println("Viewing Entries...");
-
         System.out.print("Enter User ID: ");
         try { userId = UUID.fromString(in.nextLine().trim()); }
         catch(Exception e) { System.out.println(e.getMessage()); return false; }

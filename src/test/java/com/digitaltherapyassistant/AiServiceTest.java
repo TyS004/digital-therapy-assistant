@@ -103,6 +103,6 @@ public class AiServiceTest {
         SessionSummary summary = aiService.summarizeSession(cbtSessionId);
         assertNotNull(summary);
         assertEquals(cbtSessionId, summary.getSessionId());
-        assertEquals("Session summary text", summary.getMessage());
+        assertEquals("Session summary text", summary.getAiSummary());
     }
 }
