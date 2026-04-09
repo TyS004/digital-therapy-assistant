@@ -36,4 +36,5 @@ build/
 
 ### DATABASE ###
 /data/digitaltherapy_db.lock.db
-/data/digitaltherapy_db.mv.db
+/data/digitaltherapy_db.mv.db.DS_Store
+**/.DS_Store

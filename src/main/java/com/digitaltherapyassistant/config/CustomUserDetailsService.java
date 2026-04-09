@@ -10,40 +10,7 @@ import com.digitaltherapyassistant.repository.UserRepository;
 
 import java.util.List;
 
-/**
- * ============================================================================
- * CUSTOM USER DETAILS SERVICE — SPRING SECURITY INTEGRATION
- * ============================================================================
- *
- * CONCEPT: UserDetailsService
- * ------------------------------
- * UserDetailsService is a core interface in Spring Security. It defines a
- * single method: loadUserByUsername(). Spring Security calls this during
- * authentication to load user data from your data store.
- *
- * The returned UserDetails object contains:
- *   - Username and password (for credential verification)
- *   - Granted authorities (roles/permissions for authorization)
- *   - Account status flags (enabled, locked, expired, etc.)
- *
- * CONCEPT: GrantedAuthority
- * ---------------------------
- * GrantedAuthority represents a permission or role assigned to a user.
- * Spring Security uses the "ROLE_" prefix convention:
- *   - UserRole.SALES_REP → ROLE_SALES_REP
- *   - UserRole.SYSTEM_ADMIN → ROLE_SYSTEM_ADMIN
- *
- * In authorization rules, hasRole("SALES_REP") automatically checks for
- * the "ROLE_SALES_REP" authority.
- *
- * CONCEPT: @Service
- * -------------------
- * @Service is a specialization of @Component that indicates this class
- * contains business logic. It's functionally identical to @Component but
- * communicates intent — this bean is part of the service/business layer.
- *
- * @see org.springframework.security.core.userdetails.UserDetailsService
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

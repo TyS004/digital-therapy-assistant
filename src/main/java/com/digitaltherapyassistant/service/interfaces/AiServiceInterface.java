@@ -1,6 +1,7 @@
 package com.digitaltherapyassistant.service.interfaces;
 
 import com.digitaltherapyassistant.dto.DiaryInsights;
+import com.digitaltherapyassistant.dto.DistortionSuggestion;
 import com.digitaltherapyassistant.dto.response.crisis.CrisisDetectionResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.model.Distortion;
@@ -12,7 +13,7 @@ import java.util.UUID;
 public interface AiServiceInterface {
     ChatResponse generateResponse(UUID sessionId, String userMessage) ;
 
-    List<Distortion> analyzeThought(String automaticThought) ;
+    List<DistortionSuggestion> analyzeThought(String automaticThought) ;
 
     List<String> generateReframingPrompts(String thought, List<String> distortionIds) ;
 

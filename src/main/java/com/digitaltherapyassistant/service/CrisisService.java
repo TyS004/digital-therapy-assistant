@@ -6,7 +6,7 @@ import com.digitaltherapyassistant.dto.response.crisis.SafetyPlanResponse;
 import com.digitaltherapyassistant.entity.CopingStrategy;
 import com.digitaltherapyassistant.entity.TrustedContact;
 import com.digitaltherapyassistant.entity.User;
-import com.digitaltherapyassistant.exception.ResourceNotFoundException;
+import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.mapper.DtoMapper;
 import com.digitaltherapyassistant.repository.CopingStrategyRepository;
 import com.digitaltherapyassistant.repository.UserRepository;
@@ -72,7 +72,7 @@ public class CrisisService implements CrisisServiceInterface {
     @Override
     @Transactional(readOnly = true)
     public SafetyPlanResponse getSafetyPlan(UUID userId) {
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId.toString())) ;
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new DigitalTherapyException("User Id Not Found In Database")) ;
 
         String planText = user.getSafetyPlan();
 
@@ -84,7 +84,7 @@ public class CrisisService implements CrisisServiceInterface {
     @Transactional
     public SafetyPlanResponse updateSafetyPlan(UUID userId, String planText) {
 
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId.toString())) ;
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new DigitalTherapyException("User Id Not Found In Database")) ;
 
         user.setSafetyPlan(planText);
         this.userRepository.save(user) ;

@@ -1,6 +1,7 @@
 package com.digitaltherapyassistant.service;
 
 import com.digitaltherapyassistant.dto.DiaryInsights;
+import com.digitaltherapyassistant.dto.DistortionSuggestion;
 import com.digitaltherapyassistant.dto.response.crisis.CrisisDetectionResponse;
 import com.digitaltherapyassistant.dto.response.session.SessionSummary;
 import com.digitaltherapyassistant.entity.CbtSession;
@@ -10,6 +11,7 @@ import com.digitaltherapyassistant.entity.UserSession;
 import com.digitaltherapyassistant.exception.DigitalTherapyException;
 import com.digitaltherapyassistant.model.Distortion;
 import com.digitaltherapyassistant.repository.CbtSessionRepository;
+import com.digitaltherapyassistant.repository.CognitiveDistortionRepository;
 import com.digitaltherapyassistant.repository.DiaryEntryRepository;
 import com.digitaltherapyassistant.repository.UserSessionRepository;
 import com.digitaltherapyassistant.service.interfaces.AiServiceInterface;
@@ -40,6 +42,7 @@ public class AiService implements AiServiceInterface {
     private final DiaryEntryRepository diaryEntryRepository;
     private final CbtSessionRepository cbtSessionRepository;
     private final UserSessionRepository userSessionRepository;
+    private final CognitiveDistortionRepository cognitiveDistortionRepository ;
     private static final Logger logger = LoggerFactory.getLogger(AiService.class);
 
     public AiService(
@@ -49,7 +52,8 @@ public class AiService implements AiServiceInterface {
             EmbeddingService embeddingService,
             DiaryEntryRepository diaryEntryRepository,
             CbtSessionRepository cbtSessionRepository,
-            UserSessionRepository userSessionRepository) {
+            UserSessionRepository userSessionRepository,
+            CognitiveDistortionRepository cognitiveDistortionRepository) {
         this.crisisService = crisisService;
         this.ragContextBuilder = ragContextBuilder;
         this.chatClient = chatClient;
@@ -57,6 +61,7 @@ public class AiService implements AiServiceInterface {
         this.diaryEntryRepository = diaryEntryRepository;
         this.cbtSessionRepository = cbtSessionRepository;
         this.userSessionRepository = userSessionRepository;
+        this.cognitiveDistortionRepository = cognitiveDistortionRepository ;
     }
 
     @Override
@@ -74,19 +79,17 @@ public class AiService implements AiServiceInterface {
     }
 
     @Override
-    public List<Distortion> analyzeThought(String automaticThought) {
-        List<Distortion> suggestions = new ArrayList<>();
-        List<Document> similarDistortions = embeddingService.searchByType(automaticThought, "distortion", 5);
-        String distortionContext = embeddingService.extractContext(similarDistortions);
+    public List<DistortionSuggestion> analyzeThought(String automaticThought) {
+        List<DistortionSuggestion> suggestions = new ArrayList<>();
+        List<CognitiveDistortion> cognitiveDistortions = cognitiveDistortionRepository.findAll();
         ObjectMapper mapper = new ObjectMapper();
 
         String prompt = String.format(
-            "Given this though: '%s'\n" +
-            "And these possible cognitive distortions:\n%s\n" +
-            "Which distortions apply to this thought? " +
-            "Return a JSON array of objects with fields: id, name, description.",
-            automaticThought, distortionContext
-        );
+                "Analyze the following automatic thought for cognitive distortions.\n" +
+                        "Return a JSON array of identified distortions with confidence scores.\n\n" +
+                        "Thought: %s\n\n" +
+                        "Available distortion types: %s\n",
+            automaticThought, cognitiveDistortions);
 
         String aiResponse = chatClient.prompt()
             .system("You are a CBT therapist identifying cognitive distortions. Return only valid JSON.")
@@ -95,7 +98,7 @@ public class AiService implements AiServiceInterface {
             .content();
 
         try {
-            suggestions = mapper.readValue(aiResponse, new TypeReference<List<Distortion>>() {});
+            suggestions = mapper.readValue(aiResponse, new TypeReference<List<DistortionSuggestion>>() {});
         } catch (Exception e) {
             logger.error("Failed to parse AI response: {}", e.getMessage());
         }

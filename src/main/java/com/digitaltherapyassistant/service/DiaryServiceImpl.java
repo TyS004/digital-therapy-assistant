@@ -29,6 +29,7 @@ public class DiaryServiceImpl implements DiaryService {
     private final DiaryEntryRepository diaryEntryRepository;
     private final UserRepository userRepository;
     private final CognitiveDistortionRepository cognitiveDistortionRepository;
+    private final AiService aiService ;
 
     @Override
     @Transactional
@@ -94,37 +95,13 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public List<DistortionSuggestion> suggestDistortions(String thought) {
-        // Stub implementation — replaced by AiService in Deliverable 6
+
         log.debug("Suggesting distortions for thought: {}", thought);
-        List<DistortionSuggestion> suggestions = new ArrayList<>();
 
-        String lower = thought.toLowerCase();
-        if (lower.contains("always") || lower.contains("never") || lower.contains("everyone")) {
-            suggestions.add(new DistortionSuggestion(
-                    "all-or-nothing",
-                    "All-or-Nothing Thinking",
-                    0.80,
-                    "Absolute language detected (always/never/everyone)"
-            ));
-        }
-        if (lower.contains("disaster") || lower.contains("terrible") || lower.contains("worst")) {
-            suggestions.add(new DistortionSuggestion(
-                    "catastrophizing",
-                    "Catastrophizing",
-                    0.75,
-                    "Catastrophic language detected"
-            ));
-        }
-        if (lower.contains("think") || lower.contains("know they") || lower.contains("must think")) {
-            suggestions.add(new DistortionSuggestion(
-                    "mind-reading",
-                    "Mind Reading",
-                    0.70,
-                    "Assumption about others' thoughts detected"
-            ));
-        }
 
-        return suggestions;
+        return aiService.analyzeThought(thought) ;
+
+
     }
 
     @Override
